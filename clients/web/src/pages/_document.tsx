@@ -6,7 +6,9 @@ class AppDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <link rel="icon" href="/icon/favicon.ico" type="image/x-icon" />
+        </Head>
         <body style={{ overflow: 'hidden' }}>
           {/* <body> */}
           {/* Make Color mode to persists when you refresh the page. */}

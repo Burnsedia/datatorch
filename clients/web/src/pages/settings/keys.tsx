@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { NextPage } from 'next'
-import { CardWithHeading } from '@/common/Card'
+import { Card, CardHeading } from '@/common/Card'
 import TableRow from '@/common/tables/TableRow'
 import { Table, Tbody, Checkbox, Icon, Button } from '@chakra-ui/react'
 import { SubmitHandler, useForm, UseFormRegister } from 'react-hook-form'
@@ -52,7 +52,7 @@ const ApiRow: React.FC<ApiRowProps> = ({
   return (
     <TableRow
       data={data}
-      prefixData={
+      prefix={
         <Checkbox id={id} isChecked={isChecked} onChange={onCheckboxChange} />
       }
     />
@@ -106,13 +106,14 @@ const ApiCard: React.FC = () => {
   }
 
   return (
-    <CardWithHeading name="Api Keys">
+    <Card>
+      <CardHeading>Api Keys</CardHeading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Button type="submit">
           <Icon as={FaTrash} />
         </Button>
         <Table>
-          <TableHeaderRow data={headers} prefixData={selectAllCheckbox} />
+          <TableHeaderRow data={headers} prefix={selectAllCheckbox} />
           <Tbody>
             {apiKeys.map((item, index) => (
               <ApiRow
@@ -126,7 +127,7 @@ const ApiCard: React.FC = () => {
           </Tbody>
         </Table>
       </form>
-    </CardWithHeading>
+    </Card>
   )
 }
 

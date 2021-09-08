@@ -1,13 +1,13 @@
 import React from 'react'
 import { NextPage } from 'next'
-import { CardWithHeading } from '@/common/Card'
+import { Card, CardHeading } from '@/common/Card'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 
 const NotificationsCard: React.FC = () => {
   return (
-    <CardWithHeading name="Notification Settings">
-      Notifications Settings
-    </CardWithHeading>
+    <Card>
+      <CardHeading>Notification Settings</CardHeading>
+    </Card>
   )
 }
 

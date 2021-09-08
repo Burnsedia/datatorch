@@ -1,5 +1,5 @@
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
-import { CardWithHeading } from '@/common/Card'
+import { Card, CardHeading } from '@/common/Card'
 import { FormToggle } from '@/common/forms/FormField'
 import { NextPage } from 'next'
 import React from 'react'
@@ -18,12 +18,12 @@ const DarkModeCard: React.FC = () => {
     formState: { isSubmitting }
   } = useForm<DarkModeInputs>({ mode: 'onChange' })
 
-  const onSubmit: SubmitHandler<DarkModeInputs> = (data, event) =>
-    // eslint-disable-next-line no-console
-    console.log(data, event)
+  const onSubmit = handleSubmit((data, event) => console.log(data, event))
+    
 
   return (
-    <CardWithHeading name="Dark Mode">
+    <Card>
+      <CardHeading>Dark Mode</CardHeading>
       <form onChange={handleSubmit(onSubmit)}>
         <FormToggle
           displayName="Enable dark mode?"
@@ -32,7 +32,7 @@ const DarkModeCard: React.FC = () => {
           register={register}
         />
       </form>
-    </CardWithHeading>
+    </Card>
   )
 }
 

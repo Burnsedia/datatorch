@@ -1,8 +1,7 @@
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
-import { CardWithHeading } from '@/common/Card'
-import StatWithNumber from '@/common/StatWithNumber'
+import { Card, CardHeading } from '@/common/Card'
 import TableRow from '@/common/tables/TableRow'
-import { HStack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react'
+import { HStack, Stat, StatHelpText, StatLabel, StatNumber, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import React, { useState } from 'react'
 
@@ -60,12 +59,22 @@ const testNextStats = {
 }
 
 const CurrentMonthlyBillStat: React.FC<BillStatProps> = ({ cost, date }) => {
-  return <StatWithNumber label="Monthly Costs" number={cost} helpText={date} />
-}
+  return (
+    <Stat>
+      <StatLabel>"Monthly Costs"</StatLabel>
+      <StatNumber>{cost}</StatNumber>
+      {date && <StatHelpText>{date}</StatHelpText>}
+    </Stat>
+  )
+  }
 
 const NextMonthlyBillStat: React.FC<BillStatProps> = ({ cost, date }) => {
   return (
-    <StatWithNumber label="Next Month's Costs" number={cost} helpText={date} />
+    <Stat>
+      <StatLabel>"Next Month's Costs'"</StatLabel>
+      <StatNumber>{cost}</StatNumber>
+      {date && <StatHelpText>{date}</StatHelpText>}
+    </Stat>
   )
 }
 
@@ -73,12 +82,13 @@ const BillingInfoCard: React.FC = () => {
   const [monthlyCosts] = useState(testMonthlyStats)
   const [nextCosts] = useState(testNextStats)
   return (
-    <CardWithHeading name="Billing Info">
+    <Card>
+      <CardHeading>Billing Info</CardHeading>
       <HStack>
         <CurrentMonthlyBillStat {...monthlyCosts} />
         <NextMonthlyBillStat {...nextCosts} />
       </HStack>
-    </CardWithHeading>
+    </Card>
   )
 }
 
@@ -97,7 +107,8 @@ const BillingHistoryCard: React.FC = () => {
   const [billingHistory] = useState(testData)
   const headers = ['Invoice Date', 'Type', 'Billing Period', 'Amount', 'Status']
   return (
-    <CardWithHeading name="Billing History">
+    <Card>
+      <CardHeading>Billing History</CardHeading>
       <Table>
         <Thead>
           <Tr>
@@ -112,7 +123,7 @@ const BillingHistoryCard: React.FC = () => {
           })}
         </Tbody>
       </Table>
-    </CardWithHeading>
+    </Card>
   )
 }
 

@@ -1,5 +1,5 @@
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
-import { CardWithHeading } from '@/common/Card'
+import { Card, CardHeading } from '@/common/Card'
 import { FormButton } from '@/common/forms/FormButton'
 import { FormInput, FormInputWrapper } from '@/common/forms/FormField'
 import { NextPage } from 'next'
@@ -42,18 +42,12 @@ const DeletionModal: React.FC<DeletionModalProps> = ({ isOpen, onClose }) => {
     handleSubmit,
     formState: { isDirty, errors },
     reset,
-    getValues
+    watch
   } = useForm<DeleteAccountInputs>()
 
-  // eslint-disable-next-line no-console
-  const onSubmit = (data, e) => console.log('onSubmit: ', data, e)
+  const onSubmit = handleSubmit((data, e) => console.log('onSubmit: ', data, e))
 
-  const {
-    email: emailErrors,
-    password: passwordErrors,
-    confirmPassword: confirmPasswordErrors
-  } = errors
-  const currentPassword = getValues('password')
+  const currentPassword = watch('password')
 
   const onCloseDeletion = () => {
     reset()
@@ -77,12 +71,12 @@ const DeletionModal: React.FC<DeletionModalProps> = ({ isOpen, onClose }) => {
               displayName="Email"
               field="email"
               type="email"
-              error={emailErrors}
+              error={errors.email}
               register={register}
               required
             />
             <FormInput
-              error={passwordErrors}
+              error={errors.password}
               displayName="Password"
               field="password"
               register={register}
@@ -91,7 +85,7 @@ const DeletionModal: React.FC<DeletionModalProps> = ({ isOpen, onClose }) => {
             />
             <FormInputWrapper
               displayName="Confirm Password"
-              error={confirmPasswordErrors}
+              error={errors.confirmPassword}
               field="confirmPassword"
             >
               <Input
@@ -99,11 +93,7 @@ const DeletionModal: React.FC<DeletionModalProps> = ({ isOpen, onClose }) => {
                 {...register('confirmPassword', {
                   required: 'Password confirmation is required.',
                   validate: {
-                    equalToPassword: value => {
-                      return (
-                        currentPassword === value || 'Passwords do not match.'
-                      )
-                    }
+                    equalToPassword: value => currentPassword === value || 'Passwords do not match.'
                   }
                 })}
               />
@@ -134,7 +124,8 @@ const DeletionCard: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <CardWithHeading name="Account Deletion">
+    <Card>
+      <CardHeading>Account Deletion</CardHeading>
       <Text>If you want to delete your account, click the button below.</Text>
       <Button
         onClick={onOpen}
@@ -145,7 +136,7 @@ const DeletionCard: React.FC = () => {
         Delete Account
       </Button>
       <DeletionModal isOpen={isOpen} onClose={onClose} />
-    </CardWithHeading>
+    </Card>
   )
 }
 
@@ -161,7 +152,8 @@ const PasswordCard: React.FC = () => {
     console.log(data, event)
 
   return (
-    <CardWithHeading name="Change Password">
+    <Card>
+      <CardHeading>Change Password</CardHeading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           field="oldPassword"
@@ -189,7 +181,8 @@ const PasswordCard: React.FC = () => {
         />
         <FormButton name="Update" isSubmitting={isSubmitting} />
       </form>
-    </CardWithHeading>
+    </Card>
+    
   )
 }
 

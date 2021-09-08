@@ -3,7 +3,7 @@ import { NextPage } from 'next'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { FormButton } from '@/common/forms/FormButton'
-import { CardWithHeading } from '@/common/Card'
+import { Card, CardHeading } from '@/common/Card'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { FormInput, FormTextarea } from '@/common/forms/FormField'
 interface ProfileInputs {
@@ -24,7 +24,8 @@ const ProfileCard: React.FC = () => {
     // eslint-disable-next-line no-console
     console.log(data, event)
   return (
-    <CardWithHeading name="Public Profile">
+    <Card>
+      <CardHeading>Public Profile</CardHeading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           field="name"
@@ -52,7 +53,7 @@ const ProfileCard: React.FC = () => {
         />
         <FormButton name="Update Profile" isSubmitting={isSubmitting} />
       </form>
-    </CardWithHeading>
+    </Card>
   )
 }
 

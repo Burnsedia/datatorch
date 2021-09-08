@@ -4,12 +4,12 @@ import { TableRowProps } from './TableRow'
 
 const TableHeaderRow: React.FC<TableRowProps> = ({
   data,
-  prefixData: prefixData
+  prefix
 }) => {
   return (
     <Thead>
       <Tr>
-        {prefixData && <Th>{prefixData}</Th>}
+        {prefix && <Th>{prefix}</Th>}
         {data.map((d, i) => (
           <Th key={i}>{d}</Th>
         ))}

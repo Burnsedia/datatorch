@@ -1,7 +1,6 @@
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { Card, CardHeading } from '@/common/Card'
-import TableRow from '@/common/tables/TableRow'
-import { HStack, Stat, StatHelpText, StatLabel, StatNumber, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react'
+import { HStack, Stat, StatHelpText, StatLabel, StatNumber, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import React, { useState } from 'react'
 
@@ -100,7 +99,11 @@ const BillingHistoryRow: React.FC<BillingHistoryProps> = ({
   status
 }) => {
   const dataArray = [invoiceDate, type, billingPeriod, amount, status]
-  return <TableRow data={dataArray} />
+  return (<Tr>
+    {dataArray.map((d, i) => (
+      <Td key={i}>{d}</Td>
+    ))}
+  </Tr>)
 }
 
 const BillingHistoryCard: React.FC = () => {

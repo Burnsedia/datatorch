@@ -2,11 +2,9 @@ import React, { useState } from 'react'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { NextPage } from 'next'
 import { Card, CardHeading } from '@/common/Card'
-import TableRow from '@/common/tables/TableRow'
-import { Table, Tbody, Checkbox, Icon, Button } from '@chakra-ui/react'
+import { Table, Tbody, Checkbox, Icon, Button, Thead, Tr, Th, Td } from '@chakra-ui/react'
 import { SubmitHandler, useForm, UseFormRegister } from 'react-hook-form'
 import { FaTrash } from 'react-icons/fa'
-import TableHeaderRow from '@/common/tables/TableHeaderRow'
 import { useEffect } from 'react'
 interface ApiRowProps {
   name: string
@@ -48,15 +46,12 @@ const ApiRow: React.FC<ApiRowProps> = ({
   onCheckboxChange
 }) => {
   const data = [name, lastAccessed, created]
-
-  return (
-    <TableRow
-      data={data}
-      prefix={
-        <Checkbox id={id} isChecked={isChecked} onChange={onCheckboxChange} />
-      }
-    />
-  )
+  return (<Tr>
+    <Td><Checkbox id={id} isChecked={isChecked} onChange={onCheckboxChange} /></Td>
+    {data.map((d, i) => (
+      <Td key={i}>{d}</Td>
+    ))}
+  </Tr>)
 }
 interface ApiInputs {
   [key: string]: boolean
@@ -113,7 +108,14 @@ const ApiCard: React.FC = () => {
           <Icon as={FaTrash} />
         </Button>
         <Table>
-          <TableHeaderRow data={headers} prefix={selectAllCheckbox} />
+          <Thead>
+            <Tr>
+              {selectAllCheckbox && <Th>{selectAllCheckbox}</Th>}
+              {headers.map((d, i) => (
+                <Th key={i}>{d}</Th>
+              ))}
+            </Tr>
+        </Thead>
           <Tbody>
             {apiKeys.map((item, index) => (
               <ApiRow

@@ -15,7 +15,6 @@ generator datatorch_prisma {
   provider        = "prisma-client-js"
   output          = "../../js/db"
   previewFeatures = ["referentialActions"]
-
 }
 
 generator nexusPrisma {
@@ -122,8 +121,8 @@ model ArticleDraft {
 model ArticlePost {
   id                      String                   @id @default(uuid())
   articleDraft            ArticleDraft             @relation(fields: [articleDraftId], references: [id])
-  articleDraftId          String
-  publication             String                   @default("Default")
+  articleDraftId          String                   @unique
+  publication             String                   @default("General")
   createdAt               DateTime                 @default(now())
   lastActivity            DateTime                 @default(now())
   postType                ArticlePostType

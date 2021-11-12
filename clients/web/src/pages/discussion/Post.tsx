@@ -1,76 +1,87 @@
-import React, { createContext, useContext } from 'react'
+import React from 'react'
 import {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  NextPage
-} from 'next'
-import { LayoutNavbarSidebar } from '@/common/layouts/LayoutNavbarSidebar'
-import { AppNavbar } from '@/common/navbar/AppNavbar'
-import {
-  Avatar,
-  Box,
-  Button,
   Flex,
-  Input,
   Text,
-  useColorModeValue as mode,
-  Container,
-  useBreakpointValue,
-  Divider,
-  VStack,
   Icon,
-  Alert,
-  AlertIcon,
-  ButtonProps,
   Image,
   Stack,
-  HStack
+  Link,
+  IconButton,
+  Spacer
 } from '@chakra-ui/react'
-import { useScrollBarTheme } from '@/libs/hooks/useScrollbarTheme'
 import { Card } from '@/common/Card'
+import { FaComment, FaTrash } from 'react-icons/fa'
+import dtlogosquare from '../../public/dtlogosquare.png'
 import {
-  FaChevronDown,
-  FaList,
-  FaNewspaper,
-  FaQuestionCircle,
-  FaBullhorn
-} from 'react-icons/fa'
-import { cookieChecker, redirectToLogin, UserData } from '@/libs/utils/cookies'
-import { IndexProps } from '../home'
-import DiscussionToolbar from './discussionToolbar'
+  useDeleteArticlePostMutation,
+  GetArticlePostsByPublicationDocument
+} from '@/generated/graphql'
+import { useDiscussionPageContext } from './DiscussionContext'
 
-const FeedPost: React.FC<props> = ({ postType, draft }) => {
-  if (postType == 'discussion') {
+const Post: React.FC<props> = ({
+  id,
+  postType,
+  author,
+  publicationName,
+  title
+}) => {
+  const context = useDiscussionPageContext()
+  const [deleteArticlePostMutation] = useDeleteArticlePostMutation({
+    variables: {
+      articlePostId: id
+    },
+    refetchQueries: [
+      GetArticlePostsByPublicationDocument.loc.source.body,
+      'getArticlePostsByPublication'
+    ]
+  })
+  if (postType == 'DISCUSSION') {
     return (
       <Card marginY={2}>
         <Flex>
           <Image
             boxSize="75px"
             borderRadius="5px"
-            src="https://bit.ly/sage-adebayo"
+            src={dtlogosquare.src}
             alt="Segun Adebayo"
           />
           <Stack paddingLeft={5} height="max">
             <Text fontWeight="bold" fontSize="md">
-              ARTICLENAME DISCUSSION ARTICLENAME DISCUSSION ARTICLENAME
-              DISCUSSION ARTICLENAME DISCUSSION ARTICLENAME DISCUSSION
-              ARTICLENAME DISCUSSION
+              <Link href={'/discussion/' + publicationName + '/' + id} id={id}>
+                {title}
+              </Link>
             </Text>
             <Stack direction="row">
-              <Box>
+              <Flex>
                 <Text fontSize="xs" fontWeight="bold">
-                  (PUBLICATIONNAME: SELF/PROJECT) &nbsp;
+                  {/* ({publicationName}: SELF/PROJECT) &nbsp; */}
+                  by {author} in {publicationName}&nbsp;
                 </Text>
-              </Box>
-              <Text fontSize="xs"> c 34&nbsp;</Text>
-              <Text fontSize="xs"> LASTACTIVITYTIME ago&nbsp;</Text>
+              </Flex>
+              <Flex px={2}>
+                <Icon as={FaComment} pr={1} />
+                <Text fontSize="xs">0&nbsp;</Text>
+              </Flex>
+              {/* <Text fontSize="xs"> LASTACTIVITYTIME ago&nbsp;</Text> */}
             </Stack>
           </Stack>
+          <Spacer />
+          {context.loggedInUsername == author ? (
+            <IconButton
+              aria-label="Delete post"
+              icon={<FaTrash />}
+              onClick={async () => {
+                await deleteArticlePostMutation()
+              }}
+            />
+          ) : (
+            <Flex></Flex>
+          )}
         </Flex>
       </Card>
     )
   }
-  if (postType == 'question') {
+  if (postType == 'QUESTION') {
     return (
       <Card marginY={2}>
         <Flex>
@@ -81,8 +92,7 @@ const FeedPost: React.FC<props> = ({ postType, draft }) => {
           </Stack>
           <Stack paddingLeft={5} height="max">
             <Text fontWeight="bold" fontSize="md">
-              How do I ARTICLENAME QUESTION ARTICLENAME QUESTION ARTICLENAME
-              QUESTION ARTICLENAME QUESTION?
+              {title}
             </Text>
             <Stack direction="row">
               <Text fontSize="xs">in &nbsp;</Text>
@@ -97,7 +107,7 @@ const FeedPost: React.FC<props> = ({ postType, draft }) => {
       </Card>
     )
   }
-  if (postType == 'classified') {
+  if (postType == 'CLASSIFIED') {
     return (
       <Card marginY={2}>
         <Flex wrap="wrap">
@@ -106,9 +116,7 @@ const FeedPost: React.FC<props> = ({ postType, draft }) => {
               M CLASSTYPE DATEPOSTED&nbsp;
             </Text>
             <Text as="span" fontWeight="bold" fontSize="md">
-              Looking for a ARTICLENAME CLASSIFIED ARTICLENAME CLASSIFIED
-              ARTICLENAME CLASSIFIED ARTICLENAME CLASSIFIED ARTICLENAME
-              CLASSIFIED ARTICLENAME CLASSIFIED
+              {title}
             </Text>
           </Box>
           <Stack direction="row">
@@ -125,4 +133,4 @@ const FeedPost: React.FC<props> = ({ postType, draft }) => {
     )
   }
 }
-export default FeedPost
+export default Post

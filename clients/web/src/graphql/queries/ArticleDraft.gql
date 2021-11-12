@@ -1,0 +1,43 @@
+mutation createArticleDraft($authorId: String!, $title: String, $content: String) {
+  createArticleDraft(authorId: $authorId, title: $title, content: $content){
+    id
+    author {
+      id
+    }
+    title
+    createdAt
+  }
+}
+
+mutation deleteArticleDraft($articleDraftId: String!) {
+  deleteArticleDraft(articleDraftId:$articleDraftId){
+    id
+  }
+}
+
+query getArticleDraftById($draftId: String!) {
+    getArticleDraft(articleDraftId:$draftId){
+        id
+        title
+        content
+    }
+}
+
+query getArticleDraftByAuthorId($authorId: String!) {
+  getArticleDrafts(projectOwnerId:$authorId){
+    id
+    title
+    createdAt
+  }
+}
+
+query getLastArticleDraft($authorId: String!) {
+  getLastArticleDraft(projectOwnerId:$authorId){
+    id
+    author {
+      id
+    }
+    title
+    createdAt
+  }
+}

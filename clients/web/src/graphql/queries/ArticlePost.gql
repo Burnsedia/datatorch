@@ -1,0 +1,64 @@
+mutation createArticlePost($articleDraftID: String!, $publication: String! $postType: ArticlePostType) {
+  createArticlePost(articleDraftId:$articleDraftID, publication:$publication, postType: $postType){
+    id
+    publication
+    postType
+  }
+}
+
+mutation deleteArticlePost($articlePostId: String!) {
+  deleteArticlePost(articlePostId:$articlePostId){
+    id
+  }
+}
+
+query getArticlePostsByPublication($publicationName: String!){
+  getArticlePostsByPublication(publicationName:$publicationName) {
+    id
+    publication
+    postType
+    articleDraft {
+      id
+      author {
+        name
+      }
+      title
+      content
+    }
+  }
+}
+
+query getArticlePostById($articlePostId: String!) {
+    getArticlePostById(articlePostId:$articlePostId) {
+      id
+      publication
+      postType
+      articleDraft {
+        id
+        author {
+          name
+        }
+        title
+        content
+      }
+    }
+}
+
+# query getArticleDraftByAuthorId($authorId: String!) {
+#   getArticleDrafts(projectOwnerId:$authorId){
+#     id
+#     title
+#     createdAt
+#   }
+# }
+
+# query getLastArticleDraft($authorId: String!) {
+#   getLastArticleDraft(projectOwnerId:$authorId){
+#     id
+#     author {
+#       id
+#     }
+#     title
+#     createdAt
+#   }
+# }

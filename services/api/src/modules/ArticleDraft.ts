@@ -34,14 +34,21 @@ export const articleDraft = objectType({
         t.field(ArticleDraft.publishedAt)
         t.field(ArticleDraft.title)
         t.field(ArticleDraft.content)
-        //t.field(ArticleDraft.articlePost)
+        t.field('articleDraft', {
+            type: 'ArticlePost',
+            resolve: (parent,_,ctx) => {
+                return ctx.db.articlePost.findUnique({
+                    where: { id: parent.articlePostId || undefined }
+                })
+            }
+        })
     }
 })
 
 // For debugging only delete this eventually
 export const getAllArticleDrafts = queryField('getAllArticleDrafts',{
     type: list(ArticleDraft.$name),
-    resolve(_root, args, ctx) {
+    resolve(parent, args, ctx) {
         return ctx.db.articleDraft.findMany()
     }
 })
@@ -52,13 +59,41 @@ export const getArticleDraftsByProjectOwner = queryField('getArticleDrafts',{
     args: {
         projectOwnerId: nonNull(stringArg())
     },
-    resolve(_root, args, ctx) {
+    resolve(parent, args, ctx) {
         return ctx.db.articleDraft.findMany({
             where: { authorId: args.projectOwnerId }
         })
     }
 })
 
+// Get all article drafts by a particular draft id
+export const getArticleDraftById = queryField('getArticleDraft',{
+    type: ArticleDraft.$name,
+    args: {
+        articleDraftId: nonNull(stringArg())
+    },
+    resolve(parent, args, ctx) {
+        return ctx.db.articleDraft.findUnique({
+            where: { id: args.articleDraftId }
+        })
+    }
+})
+
+// Get last article draft made by a particular project owner
+export const getLastDraftByProjectOwner = queryField('getLastArticleDraft',{
+    type: ArticleDraft.$name,
+    args: {
+        projectOwnerId: nonNull(stringArg())
+    },
+    resolve(parent, args, ctx) {
+        return ctx.db.articleDraft.findFirst({
+            where: { authorId: args.projectOwnerId },
+            orderBy: { createdAt: "desc"}
+        })
+    }
+})
+
+// Create draft
 export const createArticleDraft = mutationField('createArticleDraft',{
     type: ArticleDraft.$name,
     args: {
@@ -81,67 +116,15 @@ export const createArticleDraft = mutationField('createArticleDraft',{
     }
 })
 
-// export const createArticleDraftForProjectOwner = mutationField('createArticleDraftForProjectOwner',{
-//     type:'ArticleDraft',
-//     args: {
-//         authorId: nonNull(stringArg())
-//     },
-//     async resolve(_, args, ctx) {
-//         // Get project owner ID
-//         const currentProjectOwner = await ctx.db.projectOwner.findUnique({
-//             where:{ id:args.authorId }
-//          })
-//          if (!currentProjectOwner) throw new ApolloError('No project owner found with that id')
-//          try {
-//             return await ctx.db.articleDraft.create({data: {authorId: currentProjectOwner.id}})
-//         } catch {
-//             throw new ApolloError('Cannot create article draft.')
-//         }
-//     }
-// })
-
-// export const createArticleDraftForProjectOwner = mutationType({
-//     definition(t) {
-//         t.field('')
-//     }
-// })
-
-// export const getArticleDraft = queryType({
-//     definition(t) {
-//         t.field("articleDraft", {
-//             type: ArticleDraft,
-//             nullable: true,
-//             args: {
-//                  id: idArg()
-//             },
-//             resolve: (_root, args, ctx) => {
-//                 return ctx.db.articleDraft.findUnique({ where: args })
-//             }
-//         })
-//     }
-// })
-
-// export const getArticleDraft = queryField('articleDraft', {
-//     type: ArticleDraft.$name,
-//     args: {
-//         id: nonNull(stringArg()),
-//     },
-//     resolve(_root, args, ctx) {
-//         return ctx.db.articleDraft.findUnique({where: args})
-//     }
-// })
-
-// export const getArticleDraftsBelongingToProjectOwner = queryField('articleDraft[]', {
-//     type: ArticleDraft.$name,
-//     args: {
-//         author: nonNull(stringArg()),
-//     },
-//     resolve(_root, args, ctx) {
-//         return ctx.db.articleDraft.findMany({where: args})
-//     }
-// })
-
-// export const createArticleDraftForProjectOwner = mutationField("articleDraft",{
-//     type: 'Boolean',
-//     async resolve(_root, args, ctx)
-// })
+// Delete draft
+export const deleteArticleDraft = mutationField('deleteArticleDraft',{
+    type: ArticleDraft.$name,
+    args: {
+        articleDraftId: nonNull(stringArg())
+    },
+    resolve(parent,args,ctx) {
+        return ctx.db.articleDraft.delete({
+            where: { id: args.articleDraftId }
+        })
+    }
+})

@@ -1,4 +1,6 @@
 export * from './ProjectOwner'
 export * from './Project'
 export * from './ArticleDraft'
+export * from './ArticlePost'
+export * from './UserArticleInteraction'
 export * from './annotator/Classification'

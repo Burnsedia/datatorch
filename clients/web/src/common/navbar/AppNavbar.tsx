@@ -74,7 +74,7 @@ export const AppNavbar: React.FC = ({ children }) => {
         <Link m={4} color="gray.700">
           Projects
         </Link>
-        <Link m={4} href="/discussion">
+        <Link m={4} href="/discussion/General">
           Discussion
         </Link>
       </Flex>

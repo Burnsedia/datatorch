@@ -1,33 +1,11 @@
-import React, { ReactPropTypes, useState } from 'react'
+import React from 'react'
 import {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  NextPage
-} from 'next'
-import { LayoutNavbarSidebar } from '@/common/layouts/LayoutNavbarSidebar'
-import { AppNavbar } from '@/common/navbar/AppNavbar'
-import {
-  Avatar,
   Box,
   Button,
-  extendTheme,
   Flex,
-  Input,
   Text,
-  useColorModeValue as mode,
-  Container,
-  useBreakpointValue,
-  Divider,
-  VStack,
-  Icon,
-  Alert,
-  AlertIcon,
-  ButtonProps,
-  Image,
-  Select,
   Stack,
   HStack,
-  Textarea,
   Spacer,
   useDisclosure,
   Collapse
@@ -41,16 +19,16 @@ import {
   FaPlus
 } from 'react-icons/fa'
 import { UserData } from '@/libs/utils/cookies'
-import CreatePost from './createPost'
-import { useDiscussionPageContext } from './index'
+import PostEditor from './PostEditor'
+import { useDiscussionPageContext } from '@/pages/discussion/DiscussionContext'
 
 const iconMap = new Map([
   // eslint-disable-next-line react/jsx-key
-  ['discussion', <FaNewspaper />],
+  ['discussion', <FaNewspaper key="1" />],
   // eslint-disable-next-line react/jsx-key
-  ['question', <FaQuestionCircle />],
+  ['question', <FaQuestionCircle key="2" />],
   // eslint-disable-next-line react/jsx-key
-  ['classified', <FaBullhorn />]
+  ['classified', <FaBullhorn key="3" />]
 ])
 
 const DiscussionFilterIcons: React.FC<{ visible }> = ({ visible }) => {
@@ -64,7 +42,7 @@ const DiscussionToolbar: React.FC<UserData> = ({ ...user }) => {
     <Box>
       {/* Create post pop up */}
       <Collapse in={isOpen} animateOpacity>
-        <CreatePost {...user} />
+        <PostEditor {...user} />
       </Collapse>
       {/* Toolbar */}
       <Flex

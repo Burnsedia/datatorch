@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
+import { UserProvider } from '@auth0/nextjs-auth0'
 
 import { ChakraProvider } from '@chakra-ui/react'
 
@@ -13,9 +14,11 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState)
   return (
     <ApolloProvider client={apolloClient}>
-      <ChakraProvider resetCSS theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <UserProvider>
+        <ChakraProvider resetCSS theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </UserProvider>
     </ApolloProvider>
   )
 }

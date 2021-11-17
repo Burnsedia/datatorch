@@ -50,7 +50,7 @@ export function redirectToLogin(res) {
  */
 async function verifyRefreshAndReissue(req, res, redirect=true) {
   try{
-    const { data, error } = await client.query({
+    const { data } = await client.query({
       query: viewerQuery,
       context: {
         headers: {

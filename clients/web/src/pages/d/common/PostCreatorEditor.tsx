@@ -6,7 +6,6 @@ import {
   Flex,
   Input,
   Text,
-  useColorModeValue as mode,
   VStack,
   HStack,
   Spacer,
@@ -131,12 +130,6 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
       GetArticlePostsByPublicationDocument.loc.source.body,
       'getArticlePostsByPublication'
     ]
-  })
-
-  const lastSavedDraft = useGetLastArticleDraftQuery({
-    variables: {
-      authorId: user.userId
-    }
   })
 
   return (
@@ -276,7 +269,7 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
               setTitle('')
               setValue(initValue)
             } catch (error) {
-              console.log(error)
+              //console.log(error)
               toast({
                 title: 'Error',
                 status: 'error',
@@ -319,11 +312,11 @@ const DraftSelection: React.FC<{
   setSlate
 }> = ({ selectionID, title, created, setTitle, setSlate }) => {
   const [getArticleDraft, { loading, error, data }] =
-    useGetArticleDraftByIdLazyQuery({
-      variables: { draftId: selectionID }
-    })
-  const loadDraft = () => {
-    let content = ''
+    //   useGetArticleDraftByIdLazyQuery({
+    //     variables: { draftId: selectionID }
+    //   })
+    // const loadDraft = () => {
+    //   let content = ''
     // Yes its a hacky workaround
     // Update I gave up and scrapped the feature for now
     // https://github.com/apollographql/apollo-client/issues/7038
@@ -333,9 +326,9 @@ const DraftSelection: React.FC<{
     // content = data?.getArticleDraft.content
     // setSlate(JSON.parse(content))
     // End of hacky workaround
-  }
+    // }
 
-  setTitle(title)
+    setTitle(title)
 
   return (
     <Button
@@ -344,7 +337,7 @@ const DraftSelection: React.FC<{
       width="100%"
       height="100%"
       backgroundColor="green"
-      onClick={loadDraft}
+      //onClick={loadDraft}
     >
       <VStack width="100%" alignItems="left">
         <Text
@@ -368,7 +361,7 @@ const DraftSelection: React.FC<{
         variant="outline"
         border="0px"
         borderRadius="5px"
-        onClick={() => {}}
+        //onClick={() => {}}
       ></IconButton>
     </Button>
   )

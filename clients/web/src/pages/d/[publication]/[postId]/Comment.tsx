@@ -1,20 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Flex,
   Text,
-  Icon,
-  Image,
-  Stack,
-  Link,
   IconButton,
-  Spacer,
-  Container,
   Box,
   useBreakpointValue,
-  Avatar,
   Button,
-  Heading,
-  useColorModeValue,
   VStack,
   HStack,
   Modal,
@@ -28,20 +19,8 @@ import {
   Input,
   useToast
 } from '@chakra-ui/react'
-import { Card } from '@/common/Card'
-import {
-  FaComment,
-  FaFacebook,
-  FaHeart,
-  FaLink,
-  FaLinkedin,
-  FaTrash,
-  FaTwitter,
-  FaChevronUp,
-  FaChevronDown
-} from 'react-icons/fa'
+import { FaTrash, FaChevronUp, FaChevronDown } from 'react-icons/fa'
 import { Author } from './Article'
-import { useDiscussionPageContext } from '../../DiscussionContext'
 import {
   GetCommentsForPostIdDocument,
   useDeleteArticlePostMutation

@@ -1,4 +1,4 @@
-import { Box, Container, Flex } from '@chakra-ui/react'
+import { Box, Container } from '@chakra-ui/react'
 import React, { useMemo, useReducer } from 'react'
 import DiscussionToolbar from './DiscussionToolbar'
 import { cookieChecker, redirectToLogin } from '@/libs/utils/cookies'

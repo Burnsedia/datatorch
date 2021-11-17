@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react'
 import {
   FaChevronDown,
-  FaList,
   FaNewspaper,
   FaQuestionCircle,
   FaBullhorn,

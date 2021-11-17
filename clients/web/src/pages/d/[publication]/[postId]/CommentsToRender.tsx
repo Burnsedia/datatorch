@@ -1,36 +1,5 @@
-import React, { useState } from 'react'
-import {
-  Flex,
-  Text,
-  Icon,
-  Image,
-  Stack,
-  Link,
-  IconButton,
-  Spacer,
-  Container,
-  Box,
-  useBreakpointValue,
-  Avatar,
-  Button,
-  Heading,
-  useColorModeValue,
-  VStack,
-  HStack
-} from '@chakra-ui/react'
-import { Card } from '@/common/Card'
-import {
-  FaComment,
-  FaFacebook,
-  FaHeart,
-  FaLink,
-  FaLinkedin,
-  FaTrash,
-  FaTwitter,
-  FaChevronUp,
-  FaChevronDown
-} from 'react-icons/fa'
-import { Author } from './Article'
+import React from 'react'
+import { Box } from '@chakra-ui/react'
 import { useGetCommentsForPostIdQuery } from '@/generated/graphql'
 import Comment from './Comment'
 

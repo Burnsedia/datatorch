@@ -1,10 +1,5 @@
-import { ProjectOwnerType } from '@shared/db'
-import { ApolloError } from 'apollo-server-errors'
-import { closestIndexTo } from 'date-fns'
-import { booleanArg, idArg, list, mutationField, mutationType, nonNull, objectType, queryField, queryType, stringArg } from 'nexus'
-import { ArticleDraft, Project, ProjectOwner} from 'nexus-prisma'
-import { resolveConfig } from 'prettier'
-import { projectOwnerQuery, projectOwnerType } from './ProjectOwner'
+import { booleanArg, list, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
+import { ArticleDraft} from 'nexus-prisma'
 
 export const articleDraft = objectType({
     name: ArticleDraft.$name,

@@ -1,44 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
-  Avatar,
-  Box,
   Button,
-  Flex,
-  Input,
-  Text,
-  useColorModeValue as mode,
   VStack,
-  HStack,
   Spacer,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   useDisclosure,
-  IconButton,
-  Alert,
   useToast,
-  Image,
   Stack,
   Textarea
 } from '@chakra-ui/react'
 
 import {
   useCreateArticleDraftMutation,
-  useGetArticleDraftByIdLazyQuery,
-  useGetArticleDraftByAuthorIdQuery,
-  useGetLastArticleDraftQuery,
   useCreateChildArticlePostMutation,
   ArticlePostType,
-  GetArticlePostsByPublicationDocument,
   GetCommentsForPostIdDocument
 } from '@/generated/graphql'
 
-import { FaTrash } from 'react-icons/fa'
-import dtlogosquare from '../../../public/dtlogosquare.png'
 import { UserData } from '@/libs/utils/cookies'
 import { useDiscussionPageContext } from '../DiscussionContext'
 import { Author } from '../[publication]/[postId]/Article'

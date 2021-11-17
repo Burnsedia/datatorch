@@ -2,13 +2,7 @@ import React, { useState } from 'react'
 import {
   Flex,
   Text,
-  Icon,
-  Image,
-  Stack,
   Link,
-  IconButton,
-  Spacer,
-  Container,
   Box,
   useBreakpointValue,
   Avatar,
@@ -16,22 +10,6 @@ import {
   Heading,
   useColorModeValue
 } from '@chakra-ui/react'
-import { Card } from '@/common/Card'
-import {
-  FaComment,
-  FaFacebook,
-  FaHeart,
-  FaLink,
-  FaLinkedin,
-  FaTrash,
-  FaTwitter
-} from 'react-icons/fa'
-import dtlogosquare from '../../public/dtlogosquare.png'
-import {
-  useDeleteArticlePostMutation,
-  GetArticlePostsByPublicationDocument
-} from '@/generated/graphql'
-import { useDiscussionPageContext } from '../../DiscussionContext'
 import { PlugableSlate } from '@/libs/slate'
 import { CommandsPlugin } from '@/libs/slate/plugins/commands'
 import { DividerPlugin } from '@/libs/slate/plugins/divider'

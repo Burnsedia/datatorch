@@ -61,9 +61,9 @@ export async function seed() {
       }
     })
 
-    console.log({ kevin, michael, justin, exampleDraft })
+    //console.log({ kevin, michael, justin, exampleDraft })
   } catch (e) {
-    console.error(e)
+    //console.error(e)
     process.exit(1)
   } finally {
     await prisma.$disconnect()

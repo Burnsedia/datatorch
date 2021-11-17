@@ -1,5 +1,5 @@
 import { arg, enumType, list, nonNull, objectType, queryField, stringArg, mutationField } from 'nexus'
-import { ArticlePost, ArticlePostType, UserArticleInteraction} from 'nexus-prisma'
+import { ArticlePost, ArticlePostType } from 'nexus-prisma'
 
 export const postType = enumType(ArticlePostType)
 

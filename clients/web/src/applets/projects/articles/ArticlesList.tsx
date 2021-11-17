@@ -1,4 +1,3 @@
-import Discussion from '@/pages/d'
 import {
   Box,
   Button,

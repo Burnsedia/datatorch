@@ -1,19 +1,8 @@
 import {
-  FaCode,
-  FaCodepen,
   FaFont,
-  FaGithub,
-  FaGripLines,
   FaHeading,
-  FaImage,
-  FaInfinity,
-  FaListOl,
-  FaListUl,
-  FaQuoteLeft,
   FaSquareRootAlt,
-  FaTwitter,
-  FaVideo
-} from 'react-icons/fa'
+  FaTwitter} from 'react-icons/fa'
 import { Command } from './utils'
 
 const basicBlocks: Command[] = [

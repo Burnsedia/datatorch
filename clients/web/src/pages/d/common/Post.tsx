@@ -2,7 +2,6 @@ import React from 'react'
 import {
   Flex,
   Text,
-  Icon,
   Image,
   Stack,
   IconButton,

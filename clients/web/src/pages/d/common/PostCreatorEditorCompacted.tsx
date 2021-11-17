@@ -6,9 +6,7 @@ import {
   Flex,
   Input,
   Text,
-  useColorModeValue as mode,
   VStack,
-  HStack,
   Spacer,
   Modal,
   ModalOverlay,
@@ -19,7 +17,6 @@ import {
   ModalCloseButton,
   useDisclosure,
   IconButton,
-  Alert,
   useToast,
   Image,
   Stack
@@ -31,15 +28,12 @@ import {
   useCreateArticleDraftMutation,
   useGetArticleDraftByIdLazyQuery,
   useGetArticleDraftByAuthorIdQuery,
-  GetArticleDraftByIdDocument,
   useGetLastArticleDraftQuery,
   useCreateArticlePostMutation,
   ArticlePostType,
-  GetArticlePostsByPublicationDocument,
-  useDeleteArticleDraftMutation
+  GetArticlePostsByPublicationDocument
 } from '@/generated/graphql'
 
-import { PlugableSlate } from '@/libs/slate'
 import { Node } from 'slate'
 import { ParagraphPlugin } from '@/libs/slate/plugins/paragraph'
 import { HeadingsPlugin } from '@/libs/slate/plugins/headings'
@@ -119,13 +113,13 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
     // },
     onCompleted: data => {
       draftId = data.createArticleDraft.id
-      console.log(draftId)
-      console.log(context)
+      //console.log(draftId)
+      //console.log(context)
       context.dispatch({
         type: 'setCurrentWorkingDraftID',
         currentWorkingDraftID: draftId
       })
-      console.log(context)
+      //console.log(context)
     }
   })
 
@@ -140,12 +134,6 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
       GetArticlePostsByPublicationDocument.loc.source.body,
       'getArticlePostsByPublication'
     ]
-  })
-
-  const lastSavedDraft = useGetLastArticleDraftQuery({
-    variables: {
-      authorId: user.userId
-    }
   })
 
   return (
@@ -308,22 +296,22 @@ const DraftSelection: React.FC<{
   setTitle
   setSlate
 }> = ({ selectionID, title, created, setTitle, setSlate }) => {
-  const [getArticleDraft, { loading, error, data }] =
-    useGetArticleDraftByIdLazyQuery({
-      variables: { draftId: selectionID }
-    })
-  const loadDraft = () => {
-    let content = ''
-    // Yes its a hacky workaround
-    // Update I gave up and scrapped the feature for now
-    // https://github.com/apollographql/apollo-client/issues/7038
-    // if (data?.getArticleDraft.content == undefined) {
-    //   return
-    // }
-    // content = data?.getArticleDraft.content
-    // setSlate(JSON.parse(content))
-    // End of hacky workaround
-  }
+  // const [getArticleDraft, { loading, error, data }] =
+  //   useGetArticleDraftByIdLazyQuery({
+  //     variables: { draftId: selectionID }
+  //   })
+  // const loadDraft = () => {
+  //   let content = ''
+  // Yes its a hacky workaround
+  // Update I gave up and scrapped the feature for now
+  // https://github.com/apollographql/apollo-client/issues/7038
+  // if (data?.getArticleDraft.content == undefined) {
+  //   return
+  // }
+  // content = data?.getArticleDraft.content
+  // setSlate(JSON.parse(content))
+  // End of hacky workaround
+  // }
 
   setTitle(title)
 
@@ -334,7 +322,7 @@ const DraftSelection: React.FC<{
       width="100%"
       height="100%"
       backgroundColor="green"
-      onClick={loadDraft}
+      //onClick={loadDraft}
     >
       <VStack width="100%" alignItems="left">
         <Text
@@ -358,7 +346,7 @@ const DraftSelection: React.FC<{
         variant="outline"
         border="0px"
         borderRadius="5px"
-        onClick={() => {}}
+        //onClick={() => {}}
       ></IconButton>
     </Button>
   )

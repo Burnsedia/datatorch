@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef, useState } from 'react'
 
-import { Editor, NodeEntry, Text as TextNode, Transforms } from 'slate'
+import { Editor, Text as TextNode, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Box, Divider, Text, useOutsideClick } from '@chakra-ui/react'
 import { useKey } from 'react-use'

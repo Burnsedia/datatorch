@@ -9,9 +9,8 @@ import Article from './Article'
 import { DiscussionLayout } from '../../DiscussionLayout'
 import CommentCreator from '../../common/CommentCreator'
 import CommentsToRender from './CommentsToRender'
-import { DiscussionPageContext } from '../../DiscussionContext'
 
-const LoadingSpinner: React.FC<props> = ({ props }) => {
+const LoadingSpinner: React.FC<props> = () => {
   return <div>loading...</div>
 }
 

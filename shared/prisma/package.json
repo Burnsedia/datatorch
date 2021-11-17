@@ -5,11 +5,12 @@
   "license": "private",
   "version": "1.0.0",
   "scripts": {
-    "generate": "npx prisma generate"
+    "generate": "prisma migrate dev",
+    "reset": "prisma migrate reset"
   },
   "dependencies": {
-    "@prisma/client": "2.25.0",
+    "@prisma/client": "^2.28.0",
     "@types/node": "*",
-    "prisma": "^2.25.0"
+    "prisma": "^2.28.0"
   }
 }

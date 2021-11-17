@@ -17,5 +17,5 @@
       // "@shared/db": ["./../../../shared/db/*/src"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "tests/**/*"]
 }

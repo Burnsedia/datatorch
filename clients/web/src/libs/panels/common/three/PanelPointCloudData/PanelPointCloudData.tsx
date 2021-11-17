@@ -47,7 +47,7 @@ const PointCloudObject: React.FC = (): JSX.Element => {
 
 const PanelPointCloudData: React.FC = () => {
   return (
-    <ForwardContext colorManagement={false}>
+    <ForwardContext>
       <Suspense fallback={null}>
         <PointCloudObject />
       </Suspense>

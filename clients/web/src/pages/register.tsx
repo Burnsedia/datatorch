@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -12,22 +12,45 @@ import {
   FormErrorMessage,
   Button
 } from '@chakra-ui/react'
+import { useRegisterMutation } from '@/generated/graphql'
+import { useRouter } from 'next/router'
 
-type Inputs = {
+interface Inputs {
   email: string
   username: string
   password: string
 }
 
-const Index: NextPage = () => {
+const Register: NextPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<Inputs>()
 
-  // eslint-disable-next-line no-console
-  const onSubmit = data => console.log(data)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
+  const [registerMutation] = useRegisterMutation()
+  const router = useRouter()
+
+  const onSubmit = async data => {
+    const { username, email, password } = data
+    try {
+      await registerMutation({
+        variables: {
+          login: username,
+          email,
+          password
+        }
+      })
+      setError(null)
+      setSuccess(`Registration succeeded! Redirecting...`)
+      router.push('/home')
+    } catch (e) {
+      setSuccess(null)
+      setError('Registration failed.')
+    }
+  }
 
   return (
     <Container mt={5}>
@@ -90,8 +113,14 @@ const Index: NextPage = () => {
           <ChakraLink color="teal.500">Sign in</ChakraLink>
         </Link>
       </Text>
+      <Text mt={3} color="red">
+        {error}
+      </Text>
+      <Text mt={3} color="green">
+        {success}
+      </Text>
     </Container>
   )
 }
 
-export default Index
+export default Register

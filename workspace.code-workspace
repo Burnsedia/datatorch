@@ -1,1 +1,10 @@
-{}
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"typescript.enablePromptUseWorkspaceTsdk": true
+	}
+}

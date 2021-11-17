@@ -54,8 +54,7 @@ const initValue: Node[] = [
     type: 'paragraph',
     children: [
       {
-        text:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fermentum arcu a interdum molestie. Nunc finibus cursus metus iaculis tempor. Sed ornare leo vel risus eleifend, quis euismod diam sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eros purus, feugiat nec lectus eget, maximus semper ex. Proin at felis quis massa dictum sagittis. Nulla efficitur egestas sapien, eu feugiat mauris maximus sit amet. Vivamus in erat dolor. Phasellus feugiat ullamcorper diam, at blandit quam. Phasellus euismod nulla id metus fringilla vehicula.'
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fermentum arcu a interdum molestie. Nunc finibus cursus metus iaculis tempor. Sed ornare leo vel risus eleifend, quis euismod diam sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eros purus, feugiat nec lectus eget, maximus semper ex. Proin at felis quis massa dictum sagittis. Nulla efficitur egestas sapien, eu feugiat mauris maximus sit amet. Vivamus in erat dolor. Phasellus feugiat ullamcorper diam, at blandit quam. Phasellus euismod nulla id metus fringilla vehicula.'
       }
     ]
   },
@@ -64,8 +63,7 @@ const initValue: Node[] = [
     level: 1,
     children: [
       {
-        text:
-          'Sed sed libero nisi. Ut id lectus quis sem congue lacinia. Ut aliquet sem ac venenatis suscipit. Nulla ut sem fringilla, bibendum lacus eget, accumsan dui. Ut dapibus dignissim velit in efficitur. Sed et faucibus leo. Mauris congue, nisl quis iaculis interdum, eros magna rutrum elit, a iaculis neque orci ac leo. Sed quis diam consequat, porttitor tellus et, cursus urna.'
+        text: 'Sed sed libero nisi. Ut id lectus quis sem congue lacinia. Ut aliquet sem ac venenatis suscipit. Nulla ut sem fringilla, bibendum lacus eget, accumsan dui. Ut dapibus dignissim velit in efficitur. Sed et faucibus leo. Mauris congue, nisl quis iaculis interdum, eros magna rutrum elit, a iaculis neque orci ac leo. Sed quis diam consequat, porttitor tellus et, cursus urna.'
       },
       {
         type: 'equation',
@@ -82,8 +80,7 @@ const initValue: Node[] = [
     level: 1,
     children: [
       {
-        text:
-          'Sed sed libero nisi. Ut id lectus quis sem congue lacinia. Ut aliquet sem ac venenatis suscipit. Nulla ut sem fringilla, bibendum lacus eget, accumsan dui. Ut dapibus dignissim velit in efficitur. Sed et faucibus leo. Mauris congue, nisl quis iaculis interdum, eros magna rutrum elit, a iaculis neque orci ac leo. Sed quis diam consequat, porttitor tellus et, cursus urna.'
+        text: 'Sed sed libero nisi. Ut id lectus quis sem congue lacinia. Ut aliquet sem ac venenatis suscipit. Nulla ut sem fringilla, bibendum lacus eget, accumsan dui. Ut dapibus dignissim velit in efficitur. Sed et faucibus leo. Mauris congue, nisl quis iaculis interdum, eros magna rutrum elit, a iaculis neque orci ac leo. Sed quis diam consequat, porttitor tellus et, cursus urna.'
       },
       {
         type: 'equation',
@@ -100,8 +97,7 @@ const initValue: Node[] = [
     level: 1,
     children: [
       {
-        text:
-          'Sed sed libero nisi. Ut id lectus quis sem congue lacinia. Ut aliquet sem ac venenatis suscipit. Nulla ut sem fringilla, bibendum lacus eget, accumsan dui. Ut dapibus dignissim velit in efficitur. Sed et faucibus leo. Mauris congue, nisl quis iaculis interdum, eros magna rutrum elit, a iaculis neque orci ac leo. Sed quis diam consequat, porttitor tellus et, cursus urna.'
+        text: 'Sed sed libero nisi. Ut id lectus quis sem congue lacinia. Ut aliquet sem ac venenatis suscipit. Nulla ut sem fringilla, bibendum lacus eget, accumsan dui. Ut dapibus dignissim velit in efficitur. Sed et faucibus leo. Mauris congue, nisl quis iaculis interdum, eros magna rutrum elit, a iaculis neque orci ac leo. Sed quis diam consequat, porttitor tellus et, cursus urna.'
       },
       {
         type: 'equation',
@@ -137,13 +133,21 @@ const initValue: Node[] = [
   }
 ]
 
-const Title: React.FC<{ project: string }> = ({ project }) => {
+const Title: React.FC<{
+  projectName: string
+  publicationName?: string
+  title: string
+}> = ({ projectName, publicationName, title }) => {
   const projectColor = useColorModeValue('gray.500', 'gray.400')
   return (
     <>
-      <Text color={projectColor}>{project}</Text>
+      {/** Project ID but no Publication ID = internal article*/}
+      <Text color={projectColor}>
+        Published in&nbsp;
+        {!publicationName ? 'project ' + projectName : publicationName}
+      </Text>
       <Heading as="h1" fontSize="5xl" fontWeight="bold">
-        Title here
+        {title}
       </Heading>
     </>
   )
@@ -283,7 +287,7 @@ const ProjectArticles: NextPage = () => {
   return (
     <Layout projectLayout={projectLayout} scrollbarCss={scrollbarCss}>
       <Article projectLayout={projectLayout}>
-        <Title project="Example Project">Title here</Title>
+        <Title projectName="myproject" title="title" />
         <Flex alignItems="center" marginY={4}>
           <Box flexGrow={1}>
             <Author />

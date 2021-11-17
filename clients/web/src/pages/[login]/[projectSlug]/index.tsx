@@ -329,11 +329,4 @@ export const PageProjectHome: NextPage = () => {
   )
 }
 
-// export const getServerSideProps: GetServerSideProps<{
-//   t: string
-// }> = async ctx => {
-//   console.log(ctx)
-//   return { props: { t: '' } }
-// }
-
 export default PageProjectHome

@@ -47,9 +47,10 @@ const usePluginElementRender = (plugins: SlatePlugin[]) => {
 }
 
 const usePluginLeafRender = (plugins: SlatePlugin[]) => {
-  const pluginRenderLeafs = useMemo(() => plugins.map(p => p.renderLeaf), [
-    plugins
-  ])
+  const pluginRenderLeafs = useMemo(
+    () => plugins.map(p => p.renderLeaf),
+    [plugins]
+  )
   return useCallback(
     (props: RenderLeafProps) => {
       const element = returnFirstDefined([props], pluginRenderLeafs)
@@ -77,9 +78,10 @@ export const EditablePlugins: React.FC<EditablePluginsProps> = ({
     />
   )
 
-  const pluginRenders = useMemo(() => plugins.filter(p => p.render != null), [
-    plugins
-  ])
+  const pluginRenders = useMemo(
+    () => plugins.filter(p => p.render != null),
+    [plugins]
+  )
   const callFunc = (currentIdx: number) => {
     if (pluginRenders.length === 0) return editable
     const next = () => {

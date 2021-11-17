@@ -1,5 +1,5 @@
 import { IconType } from 'react-icons/lib'
-import { Transforms, Node, Element as SlateElement, Editor } from 'slate'
+import { Transforms, Node, Element as SlateElement, Editor, NodeEntry } from 'slate'
 
 export type Command = {
   element?: Partial<SlateElement>
@@ -9,11 +9,15 @@ export type Command = {
   desc: string
 }
 
-export const createNode = (editor: Editor, node: Node) => {
-  if (Editor.isInline(editor, node)) {
-    Editor.insertNode(editor, node)
-    return
-  }
+export const createNode = (editor: Editor, createBelow:NodeEntry<Node>, node: any) => {
+  const [, createBelowPath] = createBelow
+  const insertionPoint = Editor.end(editor,createBelowPath)
+  const newNode:SlateElement = {...node,children: []}
+  Transforms.insertNodes(editor,newNode,{at:insertionPoint})
 
-  Transforms.setNodes(editor, { ...(node as any) })
+  // Move selection to the new node
+  Transforms.select(editor,{
+    path:[insertionPoint.path[0]+1,0],
+    offset:0
+  })
 }

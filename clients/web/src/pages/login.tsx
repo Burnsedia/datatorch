@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { useRouter } from 'next/router'
 import {
   Text,
   Link as ChakraLink,
@@ -13,22 +14,46 @@ import {
   Checkbox,
   Button
 } from '@chakra-ui/react'
+import { useLoginMutation } from '@/generated/graphql'
 
-type Inputs = {
-  email: string
+interface Inputs {
+  username: string
   password: string
   remember: boolean
 }
 
-const Index: NextPage = () => {
+const Login: NextPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<Inputs>()
 
-  // eslint-disable-next-line no-console
-  const onSubmit = (data, e) => console.log('onSubmit: ', data, e)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
+  const [loginMutation] = useLoginMutation()
+  const router = useRouter()
+
+  const onSubmit: SubmitHandler<Inputs> = async (
+    { username, password, remember },
+    _
+  ) => {
+    try {
+      await loginMutation({
+        variables: {
+          login: username,
+          password,
+          remember
+        }
+      })
+      setError(null)
+      setSuccess(`Login succeeded. Redirecting...`)
+      router.push('/home')
+    } catch (e) {
+      setSuccess(null)
+      setError('Invalid credentials.')
+    }
+  }
 
   return (
     <Container mt={5}>
@@ -36,15 +61,15 @@ const Index: NextPage = () => {
         Sign in to DataTorch
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.email?.message.length > 0}>
-          <FormLabel mt={3} htmlFor="email">
-            Email Address
+        <FormControl isInvalid={errors.username?.message.length > 0}>
+          <FormLabel mt={3} htmlFor="username">
+            Username
           </FormLabel>
           <Input
-            type="email"
-            {...register('email', { required: 'Email is required' })}
+            type="text"
+            {...register('username', { required: 'Username is required' })}
           />
-          <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={errors.password?.message.length > 0}>
           <FormLabel htmlFor="password" mt={4}>
@@ -78,8 +103,14 @@ const Index: NextPage = () => {
           <ChakraLink color="teal.500">Sign up</ChakraLink>
         </Link>
       </Text>
+      <Text mt={3} color="red">
+        {error}
+      </Text>
+      <Text mt={3} color="green">
+        {success}
+      </Text>
     </Container>
   )
 }
 
-export default Index
+export default Login

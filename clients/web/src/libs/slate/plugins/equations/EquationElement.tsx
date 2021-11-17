@@ -15,6 +15,7 @@ export const Equation = forwardRef<HTMLDivElement, EquationElement>(
     })
 
     const Component = block ? Box : chakra.span
+    if (content == null) content = ''
 
     return (
       <Component ref={ref} {...boxProps}>

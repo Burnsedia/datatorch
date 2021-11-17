@@ -140,11 +140,20 @@ const useCommandsMenuFocus = ({
   return { focusedName, setFocusedName }
 }
 
+// This is because editor.selection is set to null when the menu appears
+let lastSelection = {
+  anchor: { path: [0, 0], offset: 0 },
+  focus: { path: [0, 0], offset: 0 }
+}
+
 export const CommandsMenu: React.FC<{
   isOpen: boolean
   onClose?(): void
 }> = memo(({ isOpen, onClose }) => {
   const editor = useSlate()
+
+  lastSelection = editor.selection != null ? editor.selection : lastSelection
+
   const { commandMenuRef, position } = useCommandsMenuPosition(isOpen)
   useKey(
     e => e.key === 'Escape',
@@ -165,21 +174,22 @@ export const CommandsMenu: React.FC<{
     event?.preventDefault()
     event?.stopPropagation()
 
-    const leaf = Editor.node(editor, editor.selection)
+    // Get node
+    const leaf = Editor.node(editor, lastSelection)
     if (leaf == null) return
-    const [node, path] = leaf
-
+    const [node] = leaf
     if (!TextNode.isText(node)) return
 
     // Delete slash
-    const offset = node.text.indexOf('/')
     Transforms.delete(editor, {
-      at: {
-        ...editor.selection,
-        anchor: { path, offset }
-      }
+      at: lastSelection,
+      distance: 1,
+      unit: 'character',
+      reverse: true
     })
-    createNode(editor, command.element as any)
+
+    // Create node and move selection to new node
+    createNode(editor, leaf, command.element)
 
     onClose?.()
   }

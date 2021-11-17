@@ -127,7 +127,7 @@ const Molecule: React.FC = () => {
 
 const PanelPointCloudData: React.FC = () => {
   return (
-    <ForwardContext colorManagement={false}>
+    <ForwardContext>
       <Suspense fallback={null}>
         <Molecule />
       </Suspense>

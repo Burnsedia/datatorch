@@ -9,7 +9,9 @@ import {
   Icon,
   IconButton,
   Image,
+  Link,
   LinkBox,
+  Spacer,
   useDisclosure
 } from '@chakra-ui/react'
 import { CreateMenu, UserMenu } from './AppNavbarMenus'
@@ -55,7 +57,6 @@ export const AppNavbar: React.FC = ({ children }) => {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
-
       <Flex>
         {children && (
           <IconButton
@@ -69,6 +70,15 @@ export const AppNavbar: React.FC = ({ children }) => {
         )}
         <Brand />
       </Flex>
+      <Flex m={4}>
+        <Link m={4} color="gray.700">
+          Projects
+        </Link>
+        <Link m={4} href="/d/General">
+          Discussion
+        </Link>
+      </Flex>
+      <Spacer />
       <Box>
         <CreateMenu />
         <UserMenu />

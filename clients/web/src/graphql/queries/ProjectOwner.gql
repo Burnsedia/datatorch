@@ -1,6 +1,49 @@
-query ProjectOwner($id: ID, $email: String, $login: String) {
-  projectOwner(input: { id: $id, email: $email, login: $login }) {
-    id
+query ProjectOwner($id: String!) {
+  projectOwner: projectOwner(id: $id) {
     name
   }
 }
+
+query Viewer {
+  viewer {
+    login
+    email
+    userId
+    siteRole
+    authPayload {
+      refreshToken
+      accessToken
+    }
+  }
+}
+
+mutation Register($email: String!, $login: String!, $password: String!) {
+  register(email: $email, login: $login, password: $password) {
+    userId
+    refreshToken
+    accessToken
+  }
+}
+
+mutation Login($login: String!, $password: String!, $remember: Boolean!) {
+  login(login: $login, password: $password, remember: $remember) {
+    userId
+    refreshToken
+    accessToken
+  }
+}
+
+mutation Logout {
+  logout
+}
+
+# query Viewer {
+#   viewer {
+#     id
+#     name
+#     profile {
+#       publicEmail
+#       description
+#     }
+#   }
+# }

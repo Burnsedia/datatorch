@@ -18,7 +18,7 @@ import { FaComment, FaEye, FaHeart } from 'react-icons/fa'
 export const ArticleListItem: React.FC<{
   id: string
   title: string
-  description: string
+  description?: string
   draft?: boolean
   publishedAt?: Date
 }> = memo(({ id, title, draft, description }) => {

@@ -10,7 +10,11 @@ import {
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
-const createHttpLink = (uri: string) => new HttpLink({ uri })
+const createHttpLink = (uri: string) =>
+  new HttpLink({
+    uri,
+    credentials: 'include'
+  })
 const createWebsocketLink = (uri: string) =>
   new WebSocketLink({ uri, options: { reconnect: true } })
 

@@ -37,18 +37,13 @@ interface ProjectCreateFormInputs {
 }
 
 export const ProjectCreateForm: React.FC = () => {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState
-  } = useForm<ProjectCreateFormInputs>()
+  const { control, register, handleSubmit, formState } =
+    useForm<ProjectCreateFormInputs>()
 
   const onSubmit = handleSubmit(inputs => {
     const slug = slugify(inputs.name)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const variables = { ...inputs, slug }
-    // eslint-disable-next-line no-console
-    console.log(variables)
   })
 
   const isGteMd = useBreakpointValue({ base: false, md: true })

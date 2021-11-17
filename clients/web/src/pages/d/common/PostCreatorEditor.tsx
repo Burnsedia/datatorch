@@ -71,6 +71,7 @@ const AuthorTag: React.FC<UserData> = ({ ...user }) => {
     </Button>
   )
 }
+
 /* This component is the individual button that represents a single draft when you click on "load draft" */
 const DraftSelection: React.FC<{
   //selectionID: string
@@ -162,69 +163,6 @@ const DraftList: React.FC<{
   )
 }
 
-/* This component is the individual button that represents a single draft when you click on "load draft" */
-const DraftSelection: React.FC<{
-  //selectionID: string
-  title: string
-  created: string
-  setTitle
-  //setSlate
-}> = ({ title, created, setTitle }) => {
-  // const [getArticleDraft, { loading, error, data }] =
-  //   useGetArticleDraftByIdLazyQuery({
-  //     variables: { draftId: selectionID }
-  //   })
-  // const loadDraft = () => {
-  //   let content = ''
-  // Yes its a hacky workaround
-  // Update I gave up and scrapped the feature for now
-  // https://github.com/apollographql/apollo-client/issues/7038
-  // if (data?.getArticleDraft.content == undefined) {
-  //   return
-  // }
-  // content = data?.getArticleDraft.content
-  // setSlate(JSON.parse(content))
-  // End of hacky workaround
-  // }
-
-  setTitle(title)
-
-  return (
-    <Button
-      my={1}
-      py={1}
-      width="100%"
-      height="100%"
-      backgroundColor="green"
-      //onClick={loadDraft}
-    >
-      <VStack width="100%" alignItems="left">
-        <Text
-          width="100%"
-          textAlign="left"
-          fontWeight="bold"
-          maxW="325px"
-          overflow="hidden"
-        >
-          {title}
-        </Text>
-        <Text width="100%" textAlign="left" fontSize="xs" fontWeight="light">
-          {/* change this to "saved X days ago" */}
-          created on {created}
-        </Text>
-      </VStack>
-      <Spacer />
-      <IconButton
-        aria-label="Delete"
-        icon={<FaTrash />}
-        variant="outline"
-        border="0px"
-        borderRadius="5px"
-        //onClick={() => {}}
-      ></IconButton>
-    </Button>
-  )
-}
 /* This is the actual post editing component */
 const PostEditor: React.FC<UserData> = ({ ...user }) => {
   // Initializers

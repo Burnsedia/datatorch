@@ -4,7 +4,6 @@ import {
   Text,
   IconButton,
   Box,
-  useBreakpointValue,
   Button,
   VStack,
   HStack,
@@ -26,7 +25,7 @@ import {
   useDeleteArticlePostMutation
 } from '@/generated/graphql'
 
-const Votes: React.FC<props> = ({ props }) => {
+const Votes: React.FC<props> = () => {
   return (
     <HStack minWidth="100px" mx={2}>
       <Box color="gray.700">
@@ -49,7 +48,6 @@ const Votes: React.FC<props> = ({ props }) => {
 }
 
 const Comment: React.FC<props> = ({ postId, author, comment, user }) => {
-  const isMd = useBreakpointValue({ base: true, lg: false })
   const [deleteArticlePostMutation] = useDeleteArticlePostMutation({
     variables: {
       articlePostId: postId

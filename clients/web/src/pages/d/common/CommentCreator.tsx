@@ -3,7 +3,6 @@ import {
   Button,
   VStack,
   Spacer,
-  useDisclosure,
   useToast,
   Stack,
   Textarea
@@ -21,9 +20,9 @@ import { useDiscussionPageContext } from '../DiscussionContext'
 import { Author } from '../[publication]/[postId]/Article'
 import { useRouter } from 'next/router'
 
-function createComment() {
-  console.log('asdf')
-}
+// function createComment() {
+//   console.log('asdf')
+// }
 
 const CommentCreator: React.FC<UserData> = ({ user }) => {
   // Initializers
@@ -35,11 +34,10 @@ const CommentCreator: React.FC<UserData> = ({ user }) => {
     const inputValue = e.target.value
     setValue(inputValue)
   }
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const context = useDiscussionPageContext()
   let draftId = ''
 
-  const [saveDraft, { data, loading, error }] = useCreateArticleDraftMutation({
+  const [saveDraft] = useCreateArticleDraftMutation({
     onCompleted: data => {
       draftId = data.createArticleDraft.id
       context.dispatch({
@@ -103,7 +101,7 @@ const CommentCreator: React.FC<UserData> = ({ user }) => {
                     isClosable: true
                   })
                 } catch (error) {
-                  console.log(error)
+                  //console.log(error)
                   toast({
                     title: 'Error',
                     status: 'error',

@@ -4,7 +4,6 @@ import {
   Text,
   Link,
   Box,
-  useBreakpointValue,
   Avatar,
   Button,
   Heading,
@@ -72,14 +71,11 @@ export const Author: React.FC = ({ name }) => {
 }
 
 const Article: React.FC<props> = ({
-  id,
-  postType,
   author,
   publicationName,
   title,
   content
 }) => {
-  const isMd = useBreakpointValue({ base: true, lg: false })
   const initValue = JSON.parse(content)
   const [value, setValue] = useState<Node[]>(initValue)
   return (

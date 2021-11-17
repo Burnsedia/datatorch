@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-  Avatar,
   Box,
   Button,
   Flex,
@@ -16,62 +15,133 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  IconButton,
   useToast,
   Image,
-  Stack
+  Stack,
+  IconButton
 } from '@chakra-ui/react'
 
-import { FaTrash } from 'react-icons/fa'
 import dtlogosquare from '../../../public/dtlogosquare.png'
 import {
   useCreateArticleDraftMutation,
-  useGetArticleDraftByIdLazyQuery,
-  useGetArticleDraftByAuthorIdQuery,
-  useGetLastArticleDraftQuery,
   useCreateArticlePostMutation,
   ArticlePostType,
-  GetArticlePostsByPublicationDocument
+  GetArticlePostsByPublicationDocument,
+  useGetArticleDraftByAuthorIdQuery
 } from '@/generated/graphql'
 
 import { Node } from 'slate'
-import { ParagraphPlugin } from '@/libs/slate/plugins/paragraph'
-import { HeadingsPlugin } from '@/libs/slate/plugins/headings'
-import { EquationsPlugin } from '@/libs/slate/plugins/equations'
-import { TweetPlugin } from '@/libs/slate/plugins/tweet'
-import { DividerPlugin } from '@/libs/slate/plugins/divider'
-import { ToolbarPlugin } from '@/libs/slate/plugins/toolbar'
-import { CommandsPlugin } from '@/libs/slate/plugins/commands'
 import { UserData } from '@/libs/utils/cookies'
 import { useDiscussionPageContext } from '../DiscussionContext'
-
-const plugins = [
-  HeadingsPlugin(),
-  EquationsPlugin(),
-  TweetPlugin(),
-  DividerPlugin(),
-  ToolbarPlugin(),
-  CommandsPlugin(),
-  ParagraphPlugin()
-]
+import { FaTrash } from 'react-icons/fa'
 
 /* The component for the author tag */
-const AuthorTag: React.FC<UserData> = ({ ...user }) => {
+// const AuthorTag: React.FC<UserData> = ({ ...user }) => {
+//   return (
+//     <Button
+//       borderRadius="full"
+//       leftIcon={
+//         <Avatar
+//           src="https://bit.ly/sage-adebayo"
+//           size="xs"
+//           name="Segun Adebayo"
+//           ml={-1}
+//           mr={1}
+//         />
+//       }
+//     >
+//       {user.login}
+//     </Button>
+//   )
+// }
+/* This component is the individual button that represents a single draft when you click on "load draft" */
+const DraftSelection: React.FC<{
+  selectionID: string
+  title: string
+  created: string
+  setTitle
+  setSlate
+}> = ({ title, created, setTitle }) => {
+  // const [getArticleDraft, { loading, error, data }] =
+  //   useGetArticleDraftByIdLazyQuery({
+  //     variables: { draftId: selectionID }
+  //   })
+  // const loadDraft = () => {
+  //   let content = ''
+  // Yes its a hacky workaround
+  // Update I gave up and scrapped the feature for now
+  // https://github.com/apollographql/apollo-client/issues/7038
+  // if (data?.getArticleDraft.content == undefined) {
+  //   return
+  // }
+  // content = data?.getArticleDraft.content
+  // setSlate(JSON.parse(content))
+  // End of hacky workaround
+  // }
+
+  setTitle(title)
+
   return (
     <Button
-      borderRadius="full"
-      leftIcon={
-        <Avatar
-          src="https://bit.ly/sage-adebayo"
-          size="xs"
-          name="Segun Adebayo"
-          ml={-1}
-          mr={1}
-        />
-      }
+      my={1}
+      py={1}
+      width="100%"
+      height="100%"
+      backgroundColor="green"
+      //onClick={loadDraft}
     >
-      {user.login}
+      <VStack width="100%" alignItems="left">
+        <Text
+          width="100%"
+          textAlign="left"
+          fontWeight="bold"
+          maxW="325px"
+          overflow="hidden"
+        >
+          {title}
+        </Text>
+        <Text width="100%" textAlign="left" fontSize="xs" fontWeight="light">
+          {/* change this to "saved X days ago" */}
+          created on {created}
+        </Text>
+      </VStack>
+      <Spacer />
+      <IconButton
+        aria-label="Delete"
+        icon={<FaTrash />}
+        variant="outline"
+        border="0px"
+        borderRadius="5px"
+        //onClick={() => {}}
+      ></IconButton>
     </Button>
+  )
+}
+
+/* This is the list of drafts */
+const DraftList: React.FC<{
+  userId
+  setTitle: React.Dispatch<React.SetStateAction<string>>
+  setSlate: React.Dispatch<React.SetStateAction<Node[]>>
+}> = ({ userId, setTitle, setSlate }) => {
+  const drafts = useGetArticleDraftByAuthorIdQuery({
+    variables: {
+      authorId: userId
+    }
+  })
+  return (
+    <div>
+      {drafts.data?.getArticleDrafts.map(draft => (
+        <DraftSelection
+          key={draft.id}
+          selectionID={draft.id}
+          title={draft.title}
+          created={draft.createdAt.substring(0, 10)}
+          setTitle={setTitle}
+          setSlate={setSlate}
+        />
+      ))}
+    </div>
   )
 }
 
@@ -79,9 +149,9 @@ const AuthorTag: React.FC<UserData> = ({ ...user }) => {
 const PostEditor: React.FC<UserData> = ({ ...user }) => {
   // Initializers
   const toast = useToast()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onClose } = useDisclosure()
   const context = useDiscussionPageContext()
-  const handleTitleChange = event => setTitle(event.target.value)
+  //const handleTitleChange = event => setTitle(event.target.value)
 
   // For Slate
   const initValue: Node[] = [
@@ -99,7 +169,7 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
   let draftId = ''
 
   /* This is the mutation that saves the draft and sets the context to indicate the current working draft */
-  const [saveDraft, { data, loading, error }] = useCreateArticleDraftMutation({
+  const [saveDraft] = useCreateArticleDraftMutation({
     variables: {
       authorId: user.userId,
       title: title,
@@ -190,7 +260,7 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
                   setTitle('')
                   setValue(initValue)
                 } catch (error) {
-                  console.log(error)
+                  //console.log(error)
                   toast({
                     title: 'Error',
                     status: 'error',
@@ -285,97 +355,6 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
         </ModalContent>
       </Modal>
     </VStack>
-  )
-}
-
-/* This component is the individual button that represents a single draft when you click on "load draft" */
-const DraftSelection: React.FC<{
-  selectionID: string
-  title: string
-  created: string
-  setTitle
-  setSlate
-}> = ({ selectionID, title, created, setTitle, setSlate }) => {
-  // const [getArticleDraft, { loading, error, data }] =
-  //   useGetArticleDraftByIdLazyQuery({
-  //     variables: { draftId: selectionID }
-  //   })
-  // const loadDraft = () => {
-  //   let content = ''
-  // Yes its a hacky workaround
-  // Update I gave up and scrapped the feature for now
-  // https://github.com/apollographql/apollo-client/issues/7038
-  // if (data?.getArticleDraft.content == undefined) {
-  //   return
-  // }
-  // content = data?.getArticleDraft.content
-  // setSlate(JSON.parse(content))
-  // End of hacky workaround
-  // }
-
-  setTitle(title)
-
-  return (
-    <Button
-      my={1}
-      py={1}
-      width="100%"
-      height="100%"
-      backgroundColor="green"
-      //onClick={loadDraft}
-    >
-      <VStack width="100%" alignItems="left">
-        <Text
-          width="100%"
-          textAlign="left"
-          fontWeight="bold"
-          maxW="325px"
-          overflow="hidden"
-        >
-          {title}
-        </Text>
-        <Text width="100%" textAlign="left" fontSize="xs" fontWeight="light">
-          {/* change this to "saved X days ago" */}
-          created on {created}
-        </Text>
-      </VStack>
-      <Spacer />
-      <IconButton
-        aria-label="Delete"
-        icon={<FaTrash />}
-        variant="outline"
-        border="0px"
-        borderRadius="5px"
-        //onClick={() => {}}
-      ></IconButton>
-    </Button>
-  )
-}
-
-/* This is the list of drafts */
-const DraftList: React.FC<{
-  userId
-  setTitle: React.Dispatch<React.SetStateAction<string>>
-  setSlate: React.Dispatch<React.SetStateAction<Node[]>>
-}> = ({ userId, setTitle, setSlate }) => {
-  const drafts = useGetArticleDraftByAuthorIdQuery({
-    variables: {
-      authorId: userId
-    }
-  })
-  return (
-    <div>
-      {drafts.data?.getArticleDrafts.map(draft => (
-        <DraftSelection
-          key={draft.id}
-          selectionID={draft.id}
-          title={draft.title}
-          created={draft.createdAt.substring(0, 10)}
-          setTitle={setTitle}
-          setSlate={setSlate}
-        />
-      ))}
-    </div>
   )
 }
 

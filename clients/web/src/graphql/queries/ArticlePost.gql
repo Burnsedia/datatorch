@@ -6,14 +6,41 @@ mutation createArticlePost($articleDraftID: String!, $publication: String! $post
   }
 }
 
+mutation createChildArticlePost($articleDraftID: String!, $publication: String! $postType: ArticlePostType $parentId: String) {
+  createChildArticlePost(articleDraftId:$articleDraftID, publication:$publication, postType: $postType, parentId: $parentId){
+    id
+    publication
+    postType
+    childOf {
+      id
+    }
+  }
+}
+
 mutation deleteArticlePost($articlePostId: String!) {
   deleteArticlePost(articlePostId:$articlePostId){
     id
   }
 }
 
-query getArticlePostsByPublication($publicationName: String!){
-  getArticlePostsByPublication(publicationName:$publicationName) {
+query getArticlePostsByPublication($publicationName: String! $postType: ArticlePostType){
+  getArticlePostsByPublication(publicationName:$publicationName postType:$postType) {
+    id
+    publication
+    postType
+    articleDraft {
+      id
+      author {
+        name
+      }
+      title
+      content
+    }
+  }
+}
+
+query getCommentsForPostId($postId: String!){
+  getChildrenArticlePostsForPostId(postId:$postId postType:COMMENT) {
     id
     publication
     postType

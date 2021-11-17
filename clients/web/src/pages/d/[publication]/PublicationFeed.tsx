@@ -1,17 +1,22 @@
 import React from 'react'
-import { useGetArticlePostsByPublicationQuery } from '@/generated/graphql'
-import Post from './Post'
-import { useDiscussionPageContext } from './DiscussionContext'
+import {
+  ArticlePostType,
+  useGetArticlePostsByPublicationQuery
+} from '@/generated/graphql'
+import Post from '../common/Post'
+import { useDiscussionPageContext } from '../DiscussionContext'
+import { Box } from '@chakra-ui/react'
 
-const PublicationFeed: React.FC<props> = ({ publication }) => {
+const PublicationFeed: React.FC<props> = ({ ...user }) => {
   const context = useDiscussionPageContext()
   const posts = useGetArticlePostsByPublicationQuery({
     variables: {
-      publicationName: context.currentPublication
+      publicationName: context.currentPublication,
+      postType: ArticlePostType.Discussion
     }
   })
   return (
-    <div>
+    <Box marginTop="24px">
       {posts.data?.getArticlePostsByPublication.map(posts => (
         <Post
           key={posts.id}
@@ -21,9 +26,10 @@ const PublicationFeed: React.FC<props> = ({ publication }) => {
           author={posts.articleDraft.author.name}
           title={posts.articleDraft.title}
           content={posts.articleDraft.content}
+          user={user}
         />
       ))}
-    </div>
+    </Box>
   )
 }
 export default PublicationFeed

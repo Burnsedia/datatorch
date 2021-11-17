@@ -1,4 +1,4 @@
-import Discussion from '@/pages/discussion'
+import Discussion from '@/pages/d'
 import {
   Box,
   Button,

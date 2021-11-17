@@ -1,23 +1,24 @@
-import { Container, Text } from '@chakra-ui/react'
-import React, { useMemo, useReducer } from 'react'
-import DiscussionToolbar from '../DiscussionToolbar'
+import { Container, Divider } from '@chakra-ui/react'
+import React from 'react'
 import { cookieChecker, redirectToLogin } from '@/libs/utils/cookies'
 import { GetServerSidePropsContext, NextPage } from 'next'
-import { DiscussionLayout } from '../DiscussionLayout'
 import { useRouter } from 'next/router'
-import PublicationFeed from '../PublicationFeed'
 import { IndexProps } from '@/pages/home'
 import { useGetArticlePostByIdQuery } from '@/generated/graphql'
-import FullArticlePost from '../FullArticlePost'
+import Article from './Article'
+import { DiscussionLayout } from '../../DiscussionLayout'
+import CommentCreator from '../../common/CommentCreator'
+import CommentsToRender from './CommentsToRender'
+import { DiscussionPageContext } from '../../DiscussionContext'
 
 const LoadingSpinner: React.FC<props> = ({ props }) => {
   return <div>loading...</div>
 }
 
-const ExpandedArticlePage: NextPage<IndexProps> = ({ user }) => {
+const ExpandedArticlePage: NextPage<IndexProps> = ({ ...user }) => {
   const router = useRouter()
   const postId = router.query.postId as string
-  const { data, loading, error } = useGetArticlePostByIdQuery({
+  const { data, loading } = useGetArticlePostByIdQuery({
     variables: {
       articlePostId: postId
     }
@@ -38,7 +39,7 @@ const ExpandedArticlePage: NextPage<IndexProps> = ({ user }) => {
           </div>
         ) : (
           <div>
-            <FullArticlePost
+            <Article
               id={data.getArticlePostById.id}
               postType={data.getArticlePostById.postType}
               publicationName={data.getArticlePostById.publication}
@@ -48,9 +49,21 @@ const ExpandedArticlePage: NextPage<IndexProps> = ({ user }) => {
             />
           </div>
         )}
+        <Divider my={6} />
+        <CommentCreator {...user} />
+        <CommentsToRender {...user} postId={postId} />
+        <Divider mt={5} mb={10} />
       </Container>
     </DiscussionLayout>
   )
 }
 
 export default ExpandedArticlePage
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const user = await cookieChecker(context, false)
+  if (!user) return redirectToLogin(context.res)
+  return {
+    props: { user }
+  }
+}

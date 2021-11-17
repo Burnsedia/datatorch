@@ -1,11 +1,12 @@
-mutation createArticleDraft($authorId: String!, $title: String, $content: String) {
-  createArticleDraft(authorId: $authorId, title: $title, content: $content){
+mutation createArticleDraft($authorId: String!, $title: String, $content: String, $isPublished: Boolean) {
+  createArticleDraft(authorId: $authorId, title: $title, content: $content, isPublished: $isPublished){
     id
     author {
       id
     }
     title
     createdAt
+    isPublished
   }
 }
 

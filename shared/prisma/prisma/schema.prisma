@@ -141,6 +141,7 @@ enum ArticlePostType {
   DISCUSSION
   QUESTION
   CLASSIFIED
+  COMMENT
 }
 
 model UserArticleInteraction {

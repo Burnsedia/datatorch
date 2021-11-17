@@ -19,7 +19,6 @@ import {
   ModalCloseButton,
   useDisclosure,
   IconButton,
-  Alert,
   useToast
 } from '@chakra-ui/react'
 
@@ -28,12 +27,10 @@ import {
   useCreateArticleDraftMutation,
   useGetArticleDraftByIdLazyQuery,
   useGetArticleDraftByAuthorIdQuery,
-  GetArticleDraftByIdDocument,
   useGetLastArticleDraftQuery,
   useCreateArticlePostMutation,
   ArticlePostType,
-  GetArticlePostsByPublicationDocument,
-  useDeleteArticleDraftMutation
+  GetArticlePostsByPublicationDocument
 } from '@/generated/graphql'
 
 import { PlugableSlate } from '@/libs/slate'
@@ -46,7 +43,7 @@ import { DividerPlugin } from '@/libs/slate/plugins/divider'
 import { ToolbarPlugin } from '@/libs/slate/plugins/toolbar'
 import { CommandsPlugin } from '@/libs/slate/plugins/commands'
 import { UserData } from '@/libs/utils/cookies'
-import { useDiscussionPageContext } from './DiscussionContext'
+import { useDiscussionPageContext } from '../DiscussionContext'
 
 const plugins = [
   HeadingsPlugin(),
@@ -116,13 +113,10 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
     // },
     onCompleted: data => {
       draftId = data.createArticleDraft.id
-      console.log(draftId)
-      console.log(context)
       context.dispatch({
         type: 'setCurrentWorkingDraftID',
         currentWorkingDraftID: draftId
       })
-      console.log(context)
     }
   })
 
@@ -146,7 +140,7 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
   })
 
   return (
-    <VStack backgroundColor="gray.800" borderRadius="5" my={2} px={20}>
+    <VStack backgroundColor="gray.800" borderRadius="5" mb={20} pb={10} px={20}>
       {/* Select publication */}
       <HStack paddingTop={20} width="100%" alignItems="end">
         <Text color="gray.400" fontSize="lg">
@@ -197,24 +191,31 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
             textColor="gray.900"
             outlineColor="gray.900"
             onClick={async () => {
-              try {
-                await saveDraft()
-                toast({
-                  title: 'Draft Saved',
-                  status: 'success',
-                  position: 'bottom-right',
-                  duration: 9000,
-                  isClosable: true
-                })
-              } catch (error) {
-                toast({
-                  title: 'Error',
-                  status: 'error',
-                  position: 'bottom-right',
-                  duration: 9000,
-                  isClosable: true
-                })
-              }
+              toast({
+                title: 'This feature is not yet available.',
+                status: 'info',
+                position: 'bottom-right',
+                duration: 9000,
+                isClosable: true
+              })
+              // try {
+              //   await saveDraft()
+              //   toast({
+              //     title: 'Draft Saved',
+              //     status: 'success',
+              //     position: 'bottom-right',
+              //     duration: 9000,
+              //     isClosable: true
+              //   })
+              // } catch (error) {
+              //   toast({
+              //     title: 'Error',
+              //     status: 'error',
+              //     position: 'bottom-right',
+              //     duration: 9000,
+              //     isClosable: true
+              //   })
+              // }
               // if (!loading) {
               //   try {
               //     // This will save current draft and set the currentworkingdraftid in the context
@@ -234,6 +235,15 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
             px={4}
             m={3}
             //onClick={onOpen}
+            onClick={async () => {
+              toast({
+                title: 'This feature is not yet available.,',
+                status: 'info',
+                position: 'bottom-right',
+                duration: 9000,
+                isClosable: true
+              })
+            }}
           >
             Load Draft
           </Button>
@@ -246,7 +256,14 @@ const PostEditor: React.FC<UserData> = ({ ...user }) => {
           onClick={async () => {
             // Save the draft, set new current working draft id, and then create an article post
             try {
-              await saveDraft()
+              await saveDraft({
+                variables: {
+                  authorId: user.userId,
+                  title: title,
+                  content: JSON.stringify(value),
+                  isPublished: true
+                }
+              })
               await createArticlePost()
               // await setDraftToPublished
               toast({

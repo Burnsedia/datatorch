@@ -8,7 +8,8 @@ import {
   HStack,
   Spacer,
   useDisclosure,
-  Collapse
+  Collapse,
+  Divider
 } from '@chakra-ui/react'
 import {
   FaChevronDown,
@@ -19,8 +20,8 @@ import {
   FaPlus
 } from 'react-icons/fa'
 import { UserData } from '@/libs/utils/cookies'
-import PostEditor from './PostEditor'
-import { useDiscussionPageContext } from '@/pages/discussion/DiscussionContext'
+import PostCreatorEditor from '../common/PostCreatorEditor'
+import { useDiscussionPageContext } from '@/pages/d/DiscussionContext'
 
 const iconMap = new Map([
   // eslint-disable-next-line react/jsx-key
@@ -42,11 +43,11 @@ const DiscussionToolbar: React.FC<UserData> = ({ ...user }) => {
     <Box>
       {/* Create post pop up */}
       <Collapse in={isOpen} animateOpacity>
-        <PostEditor {...user} />
+        <PostCreatorEditor {...user} />
       </Collapse>
       {/* Toolbar */}
       <Flex
-        backgroundColor="green.900"
+        backgroundColor="gray.1000"
         borderRadius="5px"
         align="center"
         width="100%"
@@ -68,8 +69,12 @@ const DiscussionToolbar: React.FC<UserData> = ({ ...user }) => {
             variant="ghost"
           >
             <Flex direction="row">
-              <FaList />
-              <Text paddingLeft={2} maxWidth="400px" overflow="hidden">
+              <Text
+                paddingLeft={2}
+                maxWidth="400px"
+                overflow="hidden"
+                fontSize="5xl"
+              >
                 {context.currentPublication}
               </Text>
             </Flex>
@@ -99,15 +104,15 @@ const DiscussionToolbar: React.FC<UserData> = ({ ...user }) => {
           <Button
             rightIcon={<FaPlus size="15px" />}
             variant="solid"
-            textColor="gray.400"
-            borderTopLeftRadius="0px"
-            borderBottomLeftRadius="0px"
+            textColor="gray.800"
+            backgroundColor="gray.200"
             onClick={onToggle}
           >
             Create Post
           </Button>
         </Stack>
       </Flex>
+      <Divider marginTop="8px" />
     </Box>
   )
 }

@@ -1,7 +1,7 @@
 import { ProjectOwnerType } from '@shared/db'
 import { ApolloError } from 'apollo-server-errors'
 import { closestIndexTo } from 'date-fns'
-import { idArg, list, mutationField, mutationType, nonNull, objectType, queryField, queryType, stringArg } from 'nexus'
+import { booleanArg, idArg, list, mutationField, mutationType, nonNull, objectType, queryField, queryType, stringArg } from 'nexus'
 import { ArticleDraft, Project, ProjectOwner} from 'nexus-prisma'
 import { resolveConfig } from 'prettier'
 import { projectOwnerQuery, projectOwnerType } from './ProjectOwner'
@@ -99,7 +99,8 @@ export const createArticleDraft = mutationField('createArticleDraft',{
     args: {
         authorId: nonNull(stringArg()),
         title: stringArg(),
-        content: stringArg()
+        content: stringArg(),
+        isPublished: booleanArg()
     },
     resolve(parent,args,ctx) {
         return ctx.db.articleDraft.create({
@@ -110,7 +111,8 @@ export const createArticleDraft = mutationField('createArticleDraft',{
                     connect: {
                         id: args.authorId
                     }
-                }
+                },
+                isPublished: args.isPublished
             }
         })
     }

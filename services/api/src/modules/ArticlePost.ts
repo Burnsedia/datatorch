@@ -64,11 +64,32 @@ export const getAllArticlePosts = queryField('getAllArticlePosts', {
 export const getArticlePostsByPublication = queryField('getArticlePostsByPublication', {
   type: list(ArticlePost.$name),
   args: {
-    publicationName: nonNull(stringArg())
+    publicationName: nonNull(stringArg()),
+    postType: arg({type:postType})
   },
   resolve(parent,args,ctx) {
     return ctx.db.articlePost.findMany({
-      where: { publication: args.publicationName}
+      where: { 
+        publication: args.publicationName, 
+        postType: args.postType
+      }
+    })
+  }
+})
+
+// Get all comments for a particular publication
+export const getChildrenArticlePostsForPostId = queryField('getChildrenArticlePostsForPostId', {
+  type: list(ArticlePost.$name),
+  args: {
+    postId: nonNull(stringArg()),
+    postType: arg({type:postType})
+  },
+  resolve(parent,args,ctx) {
+    return ctx.db.articlePost.findMany({
+      where: { 
+        parentId: args.postId,
+        postType: args.postType
+      }
     })
   }
 })
@@ -100,6 +121,35 @@ export const createArticlePost = mutationField('createArticlePost',{
             articleDraft: {
               connect: {
                 id: args.articleDraftId
+              }
+            },
+            publication: args.publication,
+            postType: args.postType
+          }
+      })
+  }
+})
+
+// Create post that is a child of another post
+export const createChildArticlePost = mutationField('createChildArticlePost',{
+  type: ArticlePost.$name,
+  args: {
+      articleDraftId: nonNull(stringArg()),
+      publication: stringArg(),
+      postType: arg({type: ArticlePostType.name}),
+      parentId: stringArg()
+  },
+  resolve(parent,args,ctx) {
+      return ctx.db.articlePost.create({
+          data: {
+            articleDraft: {
+              connect: {
+                id: args.articleDraftId
+              }
+            },
+            childOf: {
+              connect: {
+                id: args.parentId
               }
             },
             publication: args.publication,

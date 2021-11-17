@@ -1,6 +1,6 @@
-import { Container } from '@chakra-ui/react'
+import { Box, Container, Flex } from '@chakra-ui/react'
 import React, { useMemo, useReducer } from 'react'
-import DiscussionToolbar from '../DiscussionToolbar'
+import DiscussionToolbar from './DiscussionToolbar'
 import { cookieChecker, redirectToLogin } from '@/libs/utils/cookies'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { DiscussionLayout } from '../DiscussionLayout'
@@ -9,7 +9,7 @@ import {
   discussionPageContextDefaults,
   discussionPageContextReducer
 } from '../DiscussionContext'
-import PublicationFeed from '../PublicationFeed'
+import PublicationFeed from './PublicationFeed'
 import { IndexProps } from '@/pages/home'
 
 const DiscussionPage: NextPage<IndexProps> = ({ user }) => {
@@ -25,9 +25,11 @@ const DiscussionPage: NextPage<IndexProps> = ({ user }) => {
   return (
     <DiscussionPageContext.Provider value={memodContext}>
       <DiscussionLayout {...user}>
-        <Container maxWidth="6xl" paddingTop={5} flexGrow={1}>
-          <DiscussionToolbar {...user} />
-          <PublicationFeed />
+        <Container maxWidth="6xl" paddingTop={7} flexGrow={1}>
+          <Box paddingTop={7} width="100%">
+            <DiscussionToolbar {...user} />
+          </Box>
+          <PublicationFeed {...user} />
           {/* <Post postType="discussion" />
                 <Post postType="classified" />
                 <Post postType="question" />

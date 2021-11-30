@@ -24,7 +24,7 @@ resources:
       name: datatorch/helm-charts-internal
 
 variables:
-  ImageName: datatorch-2/api-cloud
+  ImageName: datatorch/api-2
   DockerPath: $(Build.SourcesDirectory)/services/api/Dockerfile
   dockerRegistryServiceConnection: 'e2216a0d-a4e6-4a04-a9b7-b2ce3aae058b'
 
@@ -105,7 +105,7 @@ stages:
             displayName: Update pip
           - script: |
               pip install -r requirements.txt
-              python ./scripts/update-tag.py api $(Build.BuildId)
+              python ./scripts/update-tag.py api-2 $(Build.BuildId)
             displayName: Update API tag
           - script: |
               git config --global user.email "ci@datatorch.io"

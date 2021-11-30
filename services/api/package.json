@@ -6,6 +6,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --respawn --transpile-only ./src/index",
+    "build": "yarn install",
     "generate": "ts-node -r tsconfig-paths/register --transpile-only ./src/schema.ts"
   },
   "dependencies": {

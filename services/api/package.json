@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --respawn --transpile-only ./src/index",
-    "build": "yarn install",
+    "build": "webpack --config webpack.prod.js --progress",
     "generate": "ts-node -r tsconfig-paths/register --transpile-only ./src/schema.ts"
   },
   "dependencies": {
@@ -28,7 +28,8 @@
     "nexus": "^1.1.0",
     "nexus-prisma": "^0.29.1",
     "passport": "^0.4.1",
-    "prisma": "^2.28.0"
+    "prisma": "^2.28.0",
+    "webpack": "^5.64.4"
   },
   "devDependencies": {
     "@types/graphql-iso-date": "^3",

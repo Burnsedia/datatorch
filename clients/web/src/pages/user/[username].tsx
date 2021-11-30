@@ -69,13 +69,10 @@ const ProfileToolbar: React.FC = () => {
   return (
     <Flex bgColor="gray.800" mt={10} borderRadius="10px" minHeight={70}>
       <HStack>
-        <Text>aHome</Text>
-        <Text>Activity</Text>
+        <Text>Home</Text>
         <Text>Projects</Text>
-        <Text>Datasets</Text>
-        <Text>Articles</Text>
+        <Text>Discussions</Text>
         <Text>Code</Text>
-        <Text>Followers</Text>
       </HStack>
     </Flex>
   )

@@ -30,7 +30,8 @@
     "passport": "^0.4.1",
     "prisma": "^2.28.0",
     "webpack": "^5.64.4",
-    "webpack-cli": "^4.9.1"
+    "webpack-cli": "^4.9.1",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "@types/graphql-iso-date": "^3",

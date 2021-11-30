@@ -9,7 +9,7 @@ WORKDIR /app
 # Copy dependiences
 COPY . /app
 RUN yarn install --frozen-lockfile
-RUN yarn generate
+RUN yarn generate:api
 
 WORKDIR /app/services/api
 RUN yarn build --progress

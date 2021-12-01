@@ -33,16 +33,6 @@ module.exports = {
         loader: 'ts-loader'
       },
       {
-        test: /node_modules\/bullmq\/lib\/commands\/index\.js$/,
-        use: {
-          loader: 'string-replace-loader',
-          options: {
-            search: '__dirname',
-            replace: `"${path.dirname(require.resolve('bullmq'))}/lib/commands"`
-          }
-        }
-      },
-      {
         test: /\.(graphql|gql)$/,
         exclude: /node_modules/,
         loader: 'graphql-tag/loader'

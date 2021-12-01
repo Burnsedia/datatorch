@@ -51,6 +51,7 @@ module.exports = {
   externals: [
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')]
-    })
-  ]
+    }),
+    '_http_common', 'encoding'
+  ], 
 }

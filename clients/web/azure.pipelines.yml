@@ -1,0 +1,116 @@
+name: $(Build.BuildId)
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+      - refs/tags/*
+  paths:
+    # When updating paths you should also update this value in the Pull Request
+    # Build policies
+    include:
+      - clients/web/*
+      - shared/*
+    exclude:
+      - '*.spec.ts'
+      - '*.md'
+
+resources:
+  repositories:
+    - repository: HelmChart
+      type: github
+      endpoint: DataTorch PAT
+      name: datatorch/helm-charts-internal
+
+variables:
+  ImageName: datatorch/webclient-cloud-2
+  DockerPath: $(Build.SourcesDirectory)/clients/web/Dockerfile
+  dockerRegistryServiceConnection: 'e2216a0d-a4e6-4a04-a9b7-b2ce3aae058b'
+
+stages:
+  - stage: Build
+    displayName: Build and push image
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - task: ExtractVersionFromTag@1
+          - task: Docker@2
+            displayName: Build image
+            inputs:
+              containerRegistry: $(dockerRegistryServiceConnection)
+              command: build
+              dockerfile: $(DockerPath)
+              repository: $(ImageName)
+              buildContext: $(Build.SourcesDirectory)
+              arguments: --build-arg version=$(MAJOR).$(MINOR).$(PATCH)-$(Build.BuildId)
+              tags: |
+                latest
+                $(Build.BuildId)
+                stable
+                $(MAJOR)
+                $(MAJOR).$(MINOR)
+                $(MAJOR).$(MINOR).$(PATCH)
+          - task: Docker@2
+            # Don't push the image for pull requests
+            condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+            displayName: Push image
+            inputs:
+              containerRegistry: $(dockerRegistryServiceConnection)
+              command: push
+              dockerfile: $(DockerPath)
+              repository: $(ImageName)
+              tags: |
+                latest
+                $(Build.BuildId)
+          - task: Docker@2
+            # Push image with git tags if this run has a git tag.
+            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+            displayName: Push tagged image
+            inputs:
+              containerRegistry: $(dockerRegistryServiceConnection)
+              command: push
+              dockerfile: $(DockerPath)
+              repository: $(ImageName)
+              tags: |
+                stable
+                $(MAJOR)
+                $(MAJOR).$(MINOR)
+                $(MAJOR).$(MINOR).$(PATCH)
+  - stage: Update
+    displayName: Update
+    dependsOn:
+      - Build
+    jobs:
+      - job: UpdateHelmChart
+        displayName: Update Helm Chart
+        condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+        steps:
+          - checkout: HelmChart
+            clean: true
+            persistCredentials: true
+          - script: |
+              git checkout -t origin/master
+              git pull
+            displayName: Checkout master branch
+          - task: UsePythonVersion@0
+            displayName: Set python version
+            inputs:
+              versionSpec: '3.8'
+          - script: python -m pip install --upgrade pip
+            displayName: Update pip
+          - script: |
+              pip install -r requirements.txt
+              python ./scripts/update-tag.py webclient-2 $(Build.BuildId)
+            displayName: Update Web tag
+          - script: |
+              git config --global user.email "ci@datatorch.io"
+              git config --global user.name "DataTorch CI"
+              git add -A
+              git commit -a -m "ci: updated webclient tag"
+              git push --set-upstream origin HEAD:master
+            displayName: Commit changes

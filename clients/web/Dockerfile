@@ -3,7 +3,7 @@ FROM node:alpine AS dev
 
 COPY . /dt
 WORKDIR /dt
-RUN yarn workspaces --focus @datatorch/web
+RUN yarn workspace @datatorch/web build
 
 WORKDIR /dt/clients/web
 RUN yarn build
@@ -25,7 +25,7 @@ COPY --from=dev /dt/clients/web/.next /dt/clients/web/.next
 COPY --from=dev /dt/.yarn /dt/.yarn
 
 WORKDIR /dt
-RUN yarn workspaces --focus @datatorch/web
+RUN yarn workspace @datatorch/web build
 
 WORKDIR /dt/clients/web
 

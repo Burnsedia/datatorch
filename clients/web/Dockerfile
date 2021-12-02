@@ -5,6 +5,8 @@ COPY . /dt
 WORKDIR /dt
 RUN yarn install --frozen-lockfile
 RUN yarn generate:api
+RUN yarn workspace @datatorch/api generate
+RUN yarn workspace @datatorch/web generate
 RUN yarn workspace @datatorch/web build
 
 WORKDIR /dt/clients/web

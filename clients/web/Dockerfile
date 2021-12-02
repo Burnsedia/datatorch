@@ -3,6 +3,7 @@ FROM node:alpine AS dev
 
 COPY . /dt
 WORKDIR /dt
+RUN yarn install --frozen-lockfile
 RUN yarn workspace @datatorch/web build
 
 WORKDIR /dt/clients/web

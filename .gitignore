@@ -11,3 +11,6 @@ node_modules
 yarn-error.log
 
 tests/e2e/cypress/videos/*
+
+# Webpack
+services/api/dist/*

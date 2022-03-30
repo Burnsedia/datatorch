@@ -6,16 +6,16 @@ services:
     image: redis:6
     restart: always
     ports:
-      - 6379:6379
+      - 6378:6378
     networks:
       - devtools
 
   postgresql:
-    container_name: postgres
+    container_name: postgres-dt2
     image: postgres:13-alpine
     restart: always
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=datatorch

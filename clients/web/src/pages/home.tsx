@@ -6,6 +6,7 @@ import {
 } from 'next'
 import { LayoutNavbarSidebar } from '@/common/layouts/LayoutNavbarSidebar'
 import { AppNavbar } from '@/common/navbar/AppNavbar'
+import FeedPost from '@/applets/feed/feedPost'
 import {
   Avatar,
   Box,
@@ -29,6 +30,7 @@ import { FaBook } from 'react-icons/fa'
 import { SiGraphql } from 'react-icons/si'
 import { MdFeedback } from 'react-icons/md'
 import { cookieChecker, redirectToLogin, UserData } from '@/libs/utils/cookies'
+import FeedPost2 from '@/applets/feed/feedPost2'
 
 export interface IndexProps {
   user?: UserData
@@ -163,6 +165,12 @@ const Home: NextPage<IndexProps> = (
     <LayoutHome {...props}>
       <Flex paddingTop={5}>
         <Container maxWidth="4xl" flexGrow={1}>
+          {/* Recent Activity */}
+          <Text fontWeight="bold">Recent Activity</Text>
+          {/* Feed */}
+          <FeedPost></FeedPost>
+          <FeedPost2 />
+          {/* Alert */}
           <Alert
             marginBottom={5}
             rounded="md"
@@ -173,13 +181,7 @@ const Home: NextPage<IndexProps> = (
             We are in early access and still improving the user experience. Feel
             free to give us feedback.
           </Alert>
-
-          <Text fontWeight="bold">Recent Activity</Text>
           <Card marginY={3}></Card>
-
-          <Text fontWeight="bold" paddingY={3} fontSize="sm">
-            All Activity
-          </Text>
         </Container>
 
         {isLg && (
@@ -198,7 +200,7 @@ const Home: NextPage<IndexProps> = (
 export default Home
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const user = await cookieChecker(context)
+  const user = await cookieChecker(context, false)
   if (!user) return redirectToLogin(context.res)
   return {
     props: { user }

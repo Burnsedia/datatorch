@@ -34,7 +34,7 @@
     "@chakra-ui/theme-tools": "^1.1.4",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@react-three/drei": "^4.0.3",
+    "@react-three/drei": "^9.6.2",
     "@types/jest": "^26.0.23",
     "cookie-signature": "^1.1.0",
     "framer-motion": "^4.1.17",

@@ -70,7 +70,7 @@
     "slate-react": "^0.59.0",
     "slugify": "^1.5.3",
     "subscriptions-transport-ws": "^0.9.19",
-    "three": "^0.129.0",
+    "three": "^0.140.0",
     "wavesurfer.js": "^5.0.1"
   },
   "devDependencies": {

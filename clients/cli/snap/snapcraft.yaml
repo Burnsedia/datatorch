@@ -1,0 +1,20 @@
+name: datatorch-cli
+summary: CLI for Datatorch 
+description: |
+      CLI for Datatouch Platform and CLI allowing developers to progromaticly use The Datatorch Platform in the CI/CD Pipelines
+version: git
+grade: stable
+base: core20
+
+confinement: devmode
+
+apps:
+  dtcli:
+    command: bin/dtcli
+    plugs:
+      - home
+parts:
+  dtcli:
+    plugin: go
+    source: snap/local
+

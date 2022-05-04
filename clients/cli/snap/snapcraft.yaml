@@ -16,5 +16,6 @@ apps:
 parts:
   dtcli:
     plugin: go
+    source-type: local
     source: snap/local
 

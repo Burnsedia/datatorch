@@ -5,7 +5,6 @@ description: |
 version: git
 grade: stable
 base: core20
-
 confinement: devmode
 
 apps:
@@ -16,5 +15,6 @@ apps:
 parts:
   dtcli:
     plugin: go
-    source: ..
+    source-type: local
+    source: .
 

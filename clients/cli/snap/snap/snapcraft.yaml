@@ -9,12 +9,12 @@ base: core20
 confinement: devmode
 
 apps:
-  woke:
-    command: bin/dtl
+  dtcli:
+    command: bin/dtcli
     plugs:
       - home
 parts:
-  woke:
+  dtcli:
     plugin: go
     source-type: git
     source: https://github.com/datatorch/clients/cli 
